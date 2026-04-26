@@ -1,0 +1,38 @@
+<header class="landing-nav" [class.scrolled]="isScrolled()">
+  <a class="brand-name" routerLink="/">KisanHub</a>
+
+  <nav class="menu desktop-menu" aria-label="Primary navigation">
+    <a href="#home" (click)="scrollTo('home', $event)">Home</a>
+    <a href="#about" (click)="scrollTo('about', $event)">About Us</a>
+    <a href="#services" (click)="scrollTo('services', $event)">Services</a>
+    <a href="#contact" (click)="scrollTo('contact', $event)">Contact</a>
+  </nav>
+
+  <div class="actions desktop-actions">
+    <a mat-button routerLink="/auth/login">Login</a>
+    <a mat-flat-button class="get-started" routerLink="/auth/register">Get Started</a>
+  </div>
+
+  <button
+    class="menu-toggle"
+    type="button"
+    aria-label="Toggle navigation menu"
+    [attr.aria-expanded]="menuOpen()"
+    (click)="toggleMenu()"
+  >
+    <mat-icon>{{ menuOpen() ? 'close' : 'menu' }}</mat-icon>
+  </button>
+</header>
+
+@if (menuOpen()) {
+  <div class="mobile-menu" role="dialog" aria-label="Mobile navigation">
+    <a href="#home" (click)="scrollTo('home', $event)">Home</a>
+    <a href="#about" (click)="scrollTo('about', $event)">About Us</a>
+    <a href="#services" (click)="scrollTo('services', $event)">Services</a>
+    <a href="#contact" (click)="scrollTo('contact', $event)">Contact</a>
+    <div class="mobile-actions">
+      <a mat-stroked-button routerLink="/auth/login" (click)="closeMenu()">Login</a>
+      <a mat-flat-button class="get-started" routerLink="/auth/register" (click)="closeMenu()">Get Started</a>
+    </div>
+  </div>
+}

@@ -1,0 +1,217 @@
+<section>
+	<h2 class="section-title">Workers</h2>
+
+	<div class="page-card panel">
+		<mat-tab-group>
+			<mat-tab>
+				<ng-template mat-tab-label>
+					<mat-icon>work</mat-icon>
+					<span>Apply for Job</span>
+				</ng-template>
+
+				<div class="tab-panel">
+					<div class="filters-row">
+						<mat-form-field appearance="outline">
+							<mat-label>Location</mat-label>
+							<input
+								matInput
+								[ngModel]="locationFilter()"
+								(ngModelChange)="locationFilter.set($event)"
+								placeholder="Filter by location"
+							/>
+						</mat-form-field>
+
+						<mat-form-field appearance="outline">
+							<mat-label>Skill</mat-label>
+							<input
+								matInput
+								[ngModel]="skillFilter()"
+								(ngModelChange)="skillFilter.set($event)"
+								placeholder="Filter by skill"
+							/>
+						</mat-form-field>
+
+						<button mat-raised-button color="primary" type="button" (click)="loadApplyJobs()">
+							<mat-icon>search</mat-icon>
+							Search
+						</button>
+					</div>
+
+					@if (isLoadingJobs()) {
+						<p class="status-message">Loading jobs...</p>
+					} @else if (jobs().length === 0) {
+						<p class="status-message">No jobs found for the selected filters.</p>
+					} @else {
+						<div class="table-wrap">
+							<table mat-table [dataSource]="jobs()" class="jobs-table">
+								<ng-container matColumnDef="title">
+									<th mat-header-cell *matHeaderCellDef>Job Title</th>
+									<td mat-cell *matCellDef="let item">{{ item.title }}</td>
+								</ng-container>
+
+								<ng-container matColumnDef="description">
+									<th mat-header-cell *matHeaderCellDef>Description</th>
+									<td mat-cell *matCellDef="let item">{{ item.description }}</td>
+								</ng-container>
+
+								<ng-container matColumnDef="location">
+									<th mat-header-cell *matHeaderCellDef>Location</th>
+									<td mat-cell *matCellDef="let item">{{ item.location }}</td>
+								</ng-container>
+
+								<ng-container matColumnDef="wage">
+									<th mat-header-cell *matHeaderCellDef>Salary/Wage</th>
+									<td mat-cell *matCellDef="let item">₹{{ item.wage }}</td>
+								</ng-container>
+
+								<ng-container matColumnDef="farmer_name">
+									<th mat-header-cell *matHeaderCellDef>Farmer Name</th>
+									<td mat-cell *matCellDef="let item">{{ item.farmer_name || 'N/A' }}</td>
+								</ng-container>
+
+								<ng-container matColumnDef="posted_date">
+									<th mat-header-cell *matHeaderCellDef>Posted Date</th>
+									<td mat-cell *matCellDef="let item">{{ item.posted_date | date: 'mediumDate' }}</td>
+								</ng-container>
+
+								<ng-container matColumnDef="actions">
+									<th mat-header-cell *matHeaderCellDef>Actions</th>
+									<td mat-cell *matCellDef="let item">
+										<button
+											mat-raised-button
+											color="accent"
+											type="button"
+											(click)="applyForJob(item.id)"
+											[disabled]="appliedJobIds().has(item.id) || applyingJobId() === item.id"
+										>
+											{{ appliedJobIds().has(item.id) ? 'Applied' : (applyingJobId() === item.id ? 'Applying...' : 'Apply') }}
+										</button>
+									</td>
+								</ng-container>
+
+								<tr mat-header-row *matHeaderRowDef="applyColumns"></tr>
+								<tr mat-row *matRowDef="let row; columns: applyColumns"></tr>
+							</table>
+						</div>
+					}
+				</div>
+			</mat-tab>
+
+			<mat-tab>
+				<ng-template mat-tab-label>
+					<mat-icon>assignment</mat-icon>
+					<span>My Jobs</span>
+				</ng-template>
+
+				<div class="tab-panel">
+					@if (isLoadingMyJobs()) {
+						<p class="status-message">Loading your jobs...</p>
+					} @else if (myJobs().length === 0) {
+						<p class="status-message">You have not applied to any jobs yet.</p>
+					} @else {
+						<div class="table-wrap">
+							<table mat-table [dataSource]="myJobs()" class="jobs-table">
+								<ng-container matColumnDef="job_title">
+									<th mat-header-cell *matHeaderCellDef>Job Title</th>
+									<td mat-cell *matCellDef="let item">{{ item.job_title }}</td>
+								</ng-container>
+
+								<ng-container matColumnDef="farmer_name">
+									<th mat-header-cell *matHeaderCellDef>Farmer Name</th>
+									<td mat-cell *matCellDef="let item">{{ item.farmer_name }}</td>
+								</ng-container>
+
+								<ng-container matColumnDef="status">
+									<th mat-header-cell *matHeaderCellDef>Status</th>
+									<td mat-cell *matCellDef="let item">
+										<span [class]="'status-chip status-' + item.status">{{ getStatusLabel(item.status) }}</span>
+									</td>
+								</ng-container>
+
+								<ng-container matColumnDef="applied_at">
+									<th mat-header-cell *matHeaderCellDef>Applied Date</th>
+									<td mat-cell *matCellDef="let item">{{ item.applied_at | date: 'mediumDate' }}</td>
+								</ng-container>
+
+								<ng-container matColumnDef="started_at">
+									<th mat-header-cell *matHeaderCellDef>Started Date</th>
+									<td mat-cell *matCellDef="let item">{{ item.started_at ? (item.started_at | date: 'mediumDate') : 'N/A' }}</td>
+								</ng-container>
+
+								<tr mat-header-row *matHeaderRowDef="myJobsColumns"></tr>
+								<tr mat-row *matRowDef="let row; columns: myJobsColumns"></tr>
+							</table>
+						</div>
+					}
+				</div>
+			</mat-tab>
+
+			<mat-tab>
+				<ng-template mat-tab-label>
+					<mat-icon>person</mat-icon>
+					<span>Worker Profile</span>
+				</ng-template>
+
+				<div class="tab-panel">
+					@if (isLoadingProfile()) {
+						<p class="status-message">Loading worker profile...</p>
+					} @else {
+						<form [formGroup]="profileForm" (ngSubmit)="saveProfile()" class="profile-form">
+							<div class="grid">
+								<mat-form-field appearance="outline">
+									<mat-label>Name</mat-label>
+									<input matInput formControlName="name" />
+								</mat-form-field>
+
+								<mat-form-field appearance="outline">
+									<mat-label>Contact Number</mat-label>
+									<input matInput formControlName="contact" />
+								</mat-form-field>
+
+								<mat-form-field appearance="outline">
+									<mat-label>Location</mat-label>
+									<input matInput formControlName="location" />
+								</mat-form-field>
+
+								<mat-form-field appearance="outline">
+									<mat-label>Skills</mat-label>
+									<input matInput formControlName="skills" />
+								</mat-form-field>
+
+								<mat-form-field appearance="outline">
+									<mat-label>Experience</mat-label>
+									<input matInput formControlName="experience" />
+								</mat-form-field>
+
+								<mat-form-field appearance="outline">
+									<mat-label>Availability Status</mat-label>
+									<mat-select formControlName="availability_status">
+										<mat-option value="available">Available</mat-option>
+										<mat-option value="working">Working</mat-option>
+										<mat-option value="looking_for_work">Looking for Work</mat-option>
+									</mat-select>
+								</mat-form-field>
+
+								<mat-form-field appearance="outline">
+									<mat-label>Profile Photo URL (Optional)</mat-label>
+									<input matInput formControlName="profile_image" />
+								</mat-form-field>
+							</div>
+
+							<mat-form-field appearance="outline" class="full-width">
+								<mat-label>Bio / Description</mat-label>
+								<textarea matInput formControlName="bio" rows="4"></textarea>
+							</mat-form-field>
+
+							<div class="actions-row">
+								<button mat-raised-button color="primary" type="submit" [disabled]="isSavingProfile()">
+									{{ isSavingProfile() ? 'Saving...' : 'Update Profile' }}
+								</button>
+							</div>
+						</form>
+					}
+				</div>
+			</mat-tab>
+		</mat-tab-group>
+	</div>
+</section>

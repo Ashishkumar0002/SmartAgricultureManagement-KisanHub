@@ -1,0 +1,21 @@
+<section class="section-block" appScrollReveal>
+  <div class="trust-head">
+    <p class="tag">Trust & Feedback</p>
+    <h2>1000+ Farmers Trust Us</h2>
+  </div>
+
+  <div class="testimonial-grid">
+    @for (item of testimonials; track item.name) {
+      <article class="testimonial-card">
+        <div class="stars" aria-label="5 star testimonial">
+          @for (star of [1, 2, 3, 4, 5]; track star) {
+            <mat-icon>star</mat-icon>
+          }
+        </div>
+        <p class="quote">“{{ item.quote }}”</p>
+        <p class="name">{{ item.name }}</p>
+        <p class="role">{{ item.role }}</p>
+      </article>
+    }
+  </div>
+</section>

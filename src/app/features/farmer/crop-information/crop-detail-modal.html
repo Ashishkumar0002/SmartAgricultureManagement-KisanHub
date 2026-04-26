@@ -1,0 +1,129 @@
+<div class="crop-detail-modal">
+  <!-- Header -->
+  <div [class]="'modal-header ' + getCropTypeColor(crop.crop_type)">
+    <div class="header-content">
+      <mat-icon class="crop-icon">{{ getCropTypeIcon(crop.crop_type) }}</mat-icon>
+      <div class="header-text">
+        <h1>{{ crop.name }}</h1>
+        <span class="crop-type">{{ crop.crop_type }}</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Tabs Content -->
+  <mat-tab-group class="detail-tabs">
+    <!-- Overview Tab -->
+    <mat-tab label="Overview">
+      <div class="tab-content">
+        <div class="overview-grid">
+          <div class="overview-item">
+            <h3>Climate Requirements</h3>
+            <p>{{ crop.climate_requirements }}</p>
+          </div>
+
+          <div class="overview-item">
+            <h3>Soil Type</h3>
+            <p>{{ crop.soil_type }}</p>
+          </div>
+
+          <div class="overview-item">
+            <h3>Sowing Season</h3>
+            <p>{{ crop.sowing_season }}</p>
+          </div>
+
+          <div class="overview-item">
+            <h3>Harvesting Time</h3>
+            <p>{{ crop.harvesting_time }}</p>
+          </div>
+
+          <div class="overview-item">
+            <h3>Water Requirements</h3>
+            <p>{{ crop.water_requirements }}</p>
+          </div>
+
+          <div class="overview-item">
+            <h3>Expected Yield</h3>
+            <p>{{ crop.expected_yield }}</p>
+          </div>
+        </div>
+      </div>
+    </mat-tab>
+
+    <!-- Production Steps Tab -->
+    <mat-tab label="How to Produce">
+      <div class="tab-content">
+        <div class="steps-container">
+          <h2>Step-by-Step Production Guide</h2>
+          <ol class="steps-list">
+            <li *ngFor="let step of getLines(crop.production_steps)">
+              {{ step }}
+            </li>
+          </ol>
+        </div>
+      </div>
+    </mat-tab>
+
+    <!-- Best Practices Tab -->
+    <mat-tab label="Best Practices">
+      <div class="tab-content">
+        <div class="practices-container">
+          <h2>Best Practices for High Yield & Profit</h2>
+          <ul class="practices-list">
+            <li *ngFor="let practice of getLines(crop.best_practices)">
+              {{ practice }}
+            </li>
+          </ul>
+        </div>
+      </div>
+    </mat-tab>
+
+    <!-- Fertilizer & Nutrients Tab -->
+    <mat-tab label="Fertilizer & Nutrients">
+      <div class="tab-content">
+        <div class="fertilizer-container">
+          <h2>Fertilizer Recommendations</h2>
+          <div class="fertilizer-content">
+            <div *ngFor="let rec of getLines(crop.fertilizer_recommendations)" class="fertilizer-item">
+              {{ rec }}
+            </div>
+          </div>
+        </div>
+      </div>
+    </mat-tab>
+
+    <!-- Pest & Disease Prevention Tab -->
+    <mat-tab label="Pest & Disease Prevention">
+      <div class="tab-content">
+        <div class="pest-container">
+          <h2>Prevention and Control Methods</h2>
+          <div class="pest-content">
+            <div *ngFor="let item of getLines(crop.pest_disease_prevention)" class="pest-item">
+              {{ item }}
+            </div>
+          </div>
+        </div>
+      </div>
+    </mat-tab>
+
+    <!-- Market Tips Tab -->
+    <mat-tab label="Market & Selling">
+      <div class="tab-content">
+        <div class="market-container">
+          <h2>Market Tips and Selling Strategy</h2>
+          <ul class="market-list">
+            <li *ngFor="let tip of getLines(crop.market_tips)">
+              {{ tip }}
+            </li>
+          </ul>
+        </div>
+      </div>
+    </mat-tab>
+  </mat-tab-group>
+
+  <!-- Footer Info -->
+  <div class="modal-footer">
+    <div class="last-updated">
+      <small>Last Updated: {{ crop.updated_at | date: 'MMM d, y' }}</small>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,46 @@
+:host {
+  display: block;
+  min-height: 100vh;
+}
+
+.app-shell {
+  min-height: 100vh;
+  background: var(--sams-bg);
+}
+
+.layout {
+  display: grid;
+  grid-template-columns: 260px minmax(0, 1fr);
+  min-height: calc(100vh - 64px - 52px);
+}
+
+.layout.no-sidebar {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.content {
+  padding: 24px;
+  width: 100%;
+  max-width: 1700px;
+  margin: 0 auto;
+  border-radius: 20px;
+  border: 1px solid rgba(46, 125, 50, 0.08);
+}
+
+.auth-content {
+  position: relative;
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+}
+
+@media (max-width: 992px) {
+  .layout {
+    grid-template-columns: 1fr;
+  }
+
+  .content {
+    padding: 16px;
+  }
+}

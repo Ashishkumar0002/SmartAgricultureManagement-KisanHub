@@ -1,0 +1,18 @@
+<a
+  class="logo-link"
+  [routerLink]="homeRoute()"
+  [class.light]="tone() === 'light'"
+  [class.dark]="tone() === 'dark'"
+  [style.--kh-logo-height.px]="logoHeight()"
+  [style.--kh-text-size.px]="textSize()"
+  aria-label="Go to KisanHub home"
+>
+  <img
+    [src]="imagePath"
+    alt="KisanHub logo"
+    loading="eager"
+    decoding="async"
+    (error)="onImageError($event)"
+  />
+  <span class="brand-name">KisanHub</span>
+</a>

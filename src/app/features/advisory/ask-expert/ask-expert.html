@@ -1,0 +1,21 @@
+<section>
+	<h2 class="section-title">Ask an Expert</h2>
+	<mat-card class="page-card ask-card">
+		<form [formGroup]="form" (ngSubmit)="submit()">
+			<mat-form-field appearance="outline">
+				<mat-label>Describe your issue</mat-label>
+				<textarea matInput rows="6" formControlName="question"></textarea>
+				<mat-error *ngIf="form.controls.question.invalid && form.controls.question.touched">
+					Please enter at least 10 characters
+				</mat-error>
+			</mat-form-field>
+
+			<mat-form-field appearance="outline">
+				<mat-label>Farmer ID (optional)</mat-label>
+				<input matInput type="number" formControlName="farmer_id" />
+			</mat-form-field>
+
+			<button mat-flat-button color="primary" type="submit">Submit Query</button>
+		</form>
+	</mat-card>
+</section>

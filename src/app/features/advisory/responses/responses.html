@@ -1,0 +1,29 @@
+<section>
+	<h2 class="section-title">Advisory Responses</h2>
+	<div class="response-grid">
+		@for (item of advisories; track item.id) {
+		<mat-card class="page-card response-card">
+			<p class="question">{{ item.question }}</p>
+			<p class="response">{{ item.response || 'Waiting for expert response' }}</p>
+
+			<div class="history-section">
+				<p class="history-title">Response History</p>
+				@if (item.expertMessages.length > 0) {
+					<div class="history-list">
+						@for (message of item.expertMessages; track message.id) {
+							<div class="history-item">
+								<p class="history-message">{{ message.message }}</p>
+								<span class="history-time">{{ message.created_at | date: 'medium' }}</span>
+							</div>
+						}
+					</div>
+				} @else {
+					<p class="history-empty">No expert messages yet</p>
+				}
+			</div>
+
+			<span>{{ item.created_at | date: 'medium' }}</span>
+		</mat-card>
+		}
+	</div>
+</section>

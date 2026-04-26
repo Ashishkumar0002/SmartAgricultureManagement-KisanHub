@@ -1,0 +1,33 @@
+<section class="bg-dashboard dashboard-shell">
+	<h2 class="section-title">Overview Dashboard</h2>
+
+	<div class="loading" *ngIf="loading">
+		<mat-spinner diameter="42"></mat-spinner>
+	</div>
+
+	<ng-container *ngIf="!loading">
+		<div class="summary-grid">
+			<mat-card class="page-card summary" *ngFor="let item of summaryCards">
+				<h3>{{ item.title }}</h3>
+				<p>{{ item.value }}</p>
+			</mat-card>
+		</div>
+
+		<div class="chart-grid">
+			<mat-card class="page-card chart-card">
+				<h3>Crop Distribution</h3>
+				<canvas baseChart [type]="'pie'" [data]="pieChartData"></canvas>
+			</mat-card>
+
+			<mat-card class="page-card chart-card">
+				<h3>Land Usage</h3>
+				<canvas baseChart [type]="'bar'" [data]="barChartData"></canvas>
+			</mat-card>
+
+			<mat-card class="page-card chart-card full">
+				<h3>Growth Trend</h3>
+				<canvas baseChart [type]="'line'" [data]="lineChartData"></canvas>
+			</mat-card>
+		</div>
+	</ng-container>
+</section>

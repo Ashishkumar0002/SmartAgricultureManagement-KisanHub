@@ -1,0 +1,472 @@
+:host {
+  display: block;
+  padding: 20px;
+  background-color: #f5f5f5;
+}
+
+// ==================== TABS ====================
+
+::ng-deep .employment-tabs {
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
+  .mat-mdc-tab-header {
+    background-color: white;
+    border-bottom: 1px solid #e0e0e0;
+  }
+
+  .mat-mdc-tab-labels {
+    padding: 0 16px;
+  }
+
+  .mat-mdc-tab-label {
+    min-width: 120px;
+    font-weight: 500;
+
+    mat-icon {
+      margin-right: 8px;
+    }
+  }
+}
+
+.tab-content {
+  min-height: 400px;
+}
+
+.tab-body {
+  padding: 24px;
+  animation: fadeIn 0.3s ease-in;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+// ==================== FORMS ====================
+
+.form-card {
+  max-width: 600px;
+  margin: 0 auto 20px;
+  background-color: white;
+
+  mat-card-header {
+    margin-bottom: 16px;
+  }
+
+  mat-card-title {
+    font-size: 20px;
+    margin-bottom: 4px;
+  }
+
+  mat-card-subtitle {
+    color: #999;
+  }
+
+  mat-card-content {
+    padding: 16px 0;
+  }
+
+  form {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .full-width {
+    width: 100%;
+  }
+
+  .button-group {
+    display: flex;
+    gap: 12px;
+    margin-top: 8px;
+
+    button {
+      flex: 1;
+
+      mat-icon {
+        margin-right: 8px;
+      }
+    }
+  }
+}
+
+.info-card {
+  background-color: #fffaec;
+  border-left: 4px solid #ffc107;
+  margin-top: 16px;
+
+  mat-card-content {
+    padding: 12px;
+
+    h3 {
+      margin: 0 0 8px;
+      color: #f57f17;
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    p {
+      margin: 0;
+      color: #555;
+      font-size: 13px;
+      line-height: 1.5;
+    }
+  }
+}
+
+// ==================== FILTERS ====================
+
+.filter-section {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+
+  .filter-btn {
+    border-color: #ccc;
+    color: #666;
+    transition: all 0.2s ease;
+
+    &.active {
+      background-color: #2196f3;
+      color: white;
+      border-color: #2196f3;
+    }
+
+    &:hover:not(.active) {
+      border-color: #2196f3;
+      color: #2196f3;
+    }
+  }
+}
+
+.filter-form {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 20px;
+  align-items: flex-start;
+
+  .search-field {
+    flex: 1;
+    max-width: 400px;
+  }
+}
+
+.search-field {
+  width: 100%;
+  max-width: 400px;
+  margin-bottom: 20px;
+
+  ::ng-deep .mat-mdc-form-field {
+    width: 100%;
+  }
+}
+
+// ==================== TABLES ====================
+
+.table-wrapper {
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  overflow-x: auto;
+  margin-bottom: 20px;
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+
+    th {
+      background-color: #f5f5f5;
+      font-weight: 600;
+      padding: 16px;
+      text-align: left;
+      border-bottom: 2px solid #e0e0e0;
+      color: #333;
+      font-size: 14px;
+    }
+
+    td {
+      padding: 16px;
+      border-bottom: 1px solid #e0e0e0;
+      color: #555;
+      font-size: 14px;
+
+      &:last-child {
+        text-align: right;
+      }
+    }
+
+    tr:hover {
+      background-color: #fafafa;
+    }
+  }
+}
+
+.jobs-table,
+.applicants-table,
+.find-work-table {
+  min-width: 800px;
+}
+
+.action-cell {
+  display: flex;
+  gap: 8px;
+  justify-content: flex-end;
+
+  button {
+    margin: 0;
+  }
+}
+
+.message-field {
+  width: 220px;
+}
+
+// ==================== STATUS CHIPS ====================
+
+.status-chip {
+  display: inline-block;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+  text-align: center;
+
+    &.status-open {
+    background-color: #fff3cd;
+    color: #856404;
+    border: 1px solid #ffeaa7;
+  }
+
+    &.status-active {
+    background-color: #d9f3df;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+  }
+
+    &.status-closed,
+    &.status-rejected {
+    background-color: #d9f3df;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+  }
+
+  &.status-rejected {
+    background-color: #f9d6d8;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+  }
+
+  &.status-completed {
+    background-color: #d9f3df;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+  }
+
+  &.status-available {
+    background-color: #d9f3df;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+  }
+
+  &.status-looking_for_work {
+    background-color: #fff3cd;
+    color: #856404;
+    border: 1px solid #ffeaa7;
+  }
+
+  &.status-busy {
+    background-color: #f9d6d8;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+  }
+}
+
+// ==================== JOB DETAIL ====================
+
+.job-detail-card {
+  margin-bottom: 20px;
+
+  mat-card {
+    background-color: #f9f9f9;
+    border-left: 4px solid #2196f3;
+
+    mat-card-header {
+      margin-bottom: 0;
+    }
+
+    mat-card-title {
+      font-size: 18px;
+      margin-bottom: 4px;
+    }
+
+    mat-card-subtitle {
+      color: #666;
+    }
+  }
+}
+
+// ==================== LOADING & EMPTY STATES ====================
+
+.loading-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 300px;
+}
+
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 300px;
+  color: #999;
+  text-align: center;
+
+  mat-icon {
+    font-size: 48px;
+    width: 48px;
+    height: 48px;
+    color: #ccc;
+    margin-bottom: 12px;
+  }
+
+  p {
+    font-size: 16px;
+    margin: 0;
+  }
+}
+
+// ==================== PAGINATOR ====================
+
+::ng-deep .mat-mdc-paginator {
+  background-color: #f5f5f5;
+  border-top: 1px solid #e0e0e0;
+}
+
+// ==================== MATERIAL OVERRIDES ====================
+
+::ng-deep {
+  .mat-mdc-form-field {
+    .mat-mdc-text-field-wrapper {
+      padding-bottom: 0.75em;
+    }
+  }
+
+  .mat-mdc-tab-label {
+    font-weight: 500;
+  }
+
+  .mat-mdc-button,
+  .mat-mdc-raised-button {
+    text-transform: none;
+    font-weight: 500;
+  }
+
+  .mat-mdc-tab-body-content {
+    padding: 0;
+  }
+}
+
+// ==================== RESPONSIVE ====================
+
+@media (max-width: 768px) {
+  :host {
+    padding: 12px;
+  }
+
+  .tab-body {
+    padding: 12px;
+  }
+
+  .filter-section {
+    gap: 4px;
+
+    .filter-btn {
+      padding: 6px 8px;
+      font-size: 12px;
+    }
+  }
+
+  .search-field {
+    max-width: 100%;
+  }
+
+  .button-group {
+    flex-direction: column;
+
+    button {
+      width: 100%;
+    }
+  }
+
+  .table-wrapper {
+    table {
+      th,
+      td {
+        padding: 12px 8px;
+        font-size: 12px;
+      }
+    }
+  }
+
+  .action-cell {
+    button {
+      padding: 4px;
+
+      mat-icon {
+        font-size: 18px;
+      }
+    }
+  }
+
+  .status-chip {
+    padding: 4px 8px;
+    font-size: 11px;
+  }
+
+  .form-card {
+    max-width: 100%;
+  }
+
+  ::ng-deep .employment-tabs .mat-mdc-tab-label {
+    min-width: 80px;
+    font-size: 12px;
+
+    mat-icon {
+      margin-right: 4px;
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  .jobs-table,
+  .applicants-table,
+  .find-work-table {
+    min-width: 100%;
+    font-size: 12px;
+  }
+
+  .table-wrapper table {
+    th,
+    td {
+      padding: 8px 4px;
+    }
+  }
+
+  .filter-section {
+    flex-direction: column;
+
+    .filter-btn {
+      width: 100%;
+    }
+  }
+}

@@ -1,0 +1,54 @@
+.expert-shell {
+	min-height: 100vh;
+	overflow: hidden;
+	border-radius: 20px;
+	border: 1px solid rgba(46, 125, 50, 0.1);
+	background: linear-gradient(180deg, rgba(238, 246, 237, 0.8) 0%, rgba(255, 255, 255, 0.94) 42%);
+	padding: 20px;
+}
+
+.expert-layout {
+	width: 100%;
+	height: 100%;
+	display: flex;
+	flex-direction: column;
+
+	::ng-deep {
+		.mat-mdc-tab-group {
+			width: 100%;
+			height: 100%;
+		}
+
+		.mat-mdc-tab-header {
+			border-bottom: 2px solid rgba(46, 125, 50, 0.15);
+		}
+
+		.mat-mdc-tab-body-wrapper {
+			padding: 24px;
+			background: rgba(255, 255, 255, 0.5);
+		}
+
+		.mat-mdc-tab-body {
+			padding: 0;
+		}
+
+		.mat-mdc-tab-header-pagination-disabled {
+			display: none;
+		}
+	}
+}
+
+@media (max-width: 768px) {
+	.expert-shell {
+		padding: 12px;
+	}
+
+	.expert-layout {
+		::ng-deep {
+			.mat-mdc-tab-body-wrapper {
+				padding: 16px;
+			}
+		}
+	}
+}
+

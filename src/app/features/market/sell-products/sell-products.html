@@ -1,0 +1,23 @@
+<section>
+	<h2 class="section-title">Sell Products</h2>
+	<mat-card class="page-card sell-card">
+		<form [formGroup]="form" (ngSubmit)="submit()">
+			<mat-form-field appearance="outline">
+				<mat-label>Crop ID</mat-label>
+				<input matInput type="number" formControlName="crop_id" />
+			</mat-form-field>
+
+			<mat-form-field appearance="outline">
+				<mat-label>Quantity (kg)</mat-label>
+				<input matInput type="number" formControlName="quantity" />
+			</mat-form-field>
+
+			<mat-form-field appearance="outline">
+				<mat-label>Expected price</mat-label>
+				<input matInput type="number" formControlName="expected_price" />
+			</mat-form-field>
+
+			<button mat-flat-button color="primary" type="submit">Submit Listing</button>
+		</form>
+	</mat-card>
+</section>

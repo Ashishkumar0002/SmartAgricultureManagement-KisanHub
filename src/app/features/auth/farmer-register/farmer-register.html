@@ -1,0 +1,137 @@
+<mat-card class="register-card page-card glass-card">
+  <h2>Farmer Registration</h2>
+
+  <mat-stepper [linear]="true">
+    <mat-step [stepControl]="personalForm" label="Personal Details">
+      <form [formGroup]="personalForm" class="step-form">
+        <mat-form-field appearance="outline">
+          <mat-label>Full Name</mat-label>
+          <input matInput formControlName="full_name" />
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Email</mat-label>
+          <input matInput type="email" formControlName="email" />
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Phone Number</mat-label>
+          <input matInput formControlName="phone" />
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Password</mat-label>
+          <input matInput type="password" formControlName="password" />
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Confirm Password</mat-label>
+          <input matInput type="password" formControlName="confirm_password" />
+          @if (personalForm.hasError('passwordMismatch') && personalForm.touched) {
+            <mat-error>Passwords do not match</mat-error>
+          }
+        </mat-form-field>
+
+        <div class="file-input">
+          <label>Profile Photo</label>
+          <input type="file" accept="image/*" (change)="onProfilePhotoSelected($event)" />
+        </div>
+
+        <div class="step-actions">
+          <button mat-flat-button color="primary" matStepperNext>Next</button>
+        </div>
+      </form>
+    </mat-step>
+
+    <mat-step [stepControl]="farmForm" label="Farm Details">
+      <form [formGroup]="farmForm" class="step-form">
+        <mat-form-field appearance="outline"><mat-label>State</mat-label><input matInput formControlName="state" /></mat-form-field>
+        <mat-form-field appearance="outline"><mat-label>District</mat-label><input matInput formControlName="district" /></mat-form-field>
+        <mat-form-field appearance="outline"><mat-label>Village</mat-label><input matInput formControlName="village" /></mat-form-field>
+        <mat-form-field appearance="outline"><mat-label>Total Land (Acres)</mat-label><input matInput type="number" formControlName="total_land_acres" /></mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Soil Type</mat-label>
+          <mat-select formControlName="soil_type">
+            @for (soil of soilTypes; track soil) {
+              <mat-option [value]="soil">{{ soil }}</mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Irrigation Type</mat-label>
+          <mat-select formControlName="irrigation_type">
+            @for (type of irrigationTypes; track type) {
+              <mat-option [value]="type">{{ type }}</mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field appearance="outline"><mat-label>Water Source</mat-label><input matInput formControlName="water_source" /></mat-form-field>
+
+        <div class="step-actions">
+          <button mat-stroked-button matStepperPrevious>Back</button>
+          <button mat-flat-button color="primary" matStepperNext>Next</button>
+        </div>
+      </form>
+    </mat-step>
+
+    <mat-step [stepControl]="cropForm" label="Crop Information">
+      <form [formGroup]="cropForm" class="step-form">
+        <mat-form-field appearance="outline">
+          <mat-label>Crop Types</mat-label>
+          <mat-select formControlName="crop_types" multiple>
+            @for (crop of cropTypeOptions; track crop) {
+              <mat-option [value]="crop">{{ crop }}</mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Current Crops</mat-label>
+          <input matInput formControlName="current_crops" placeholder="e.g. Wheat, Rice" />
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Farming Experience (Years)</mat-label>
+          <input matInput type="number" formControlName="farming_experience_years" />
+        </mat-form-field>
+
+        <div class="step-actions">
+          <button mat-stroked-button matStepperPrevious>Back</button>
+          <button mat-flat-button color="primary" matStepperNext>Next</button>
+        </div>
+      </form>
+    </mat-step>
+
+    <mat-step [stepControl]="additionalForm" label="Additional Details">
+      <form [formGroup]="additionalForm" class="step-form">
+        <mat-form-field appearance="outline">
+          <mat-label>Equipment Owned (Optional)</mat-label>
+          <input matInput formControlName="equipment_owned" />
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Annual Income Range (Optional)</mat-label>
+          <mat-select formControlName="annual_income_range">
+            @for (income of incomeRanges; track income) {
+              <mat-option [value]="income">{{ income }}</mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+
+        <div class="step-actions">
+          <button mat-stroked-button matStepperPrevious>Back</button>
+          <button mat-flat-button color="primary" type="button" (click)="submit()" [disabled]="isSubmitting">
+            @if (isSubmitting) {
+              <mat-spinner diameter="20"></mat-spinner>
+            } @else {
+              <mat-icon>person_add</mat-icon>
+            }
+            Submit Registration
+          </button>
+        </div>
+      </form>
+    </mat-step>
+  </mat-stepper>
+
+  <p class="switch">Already have an account? <a routerLink="/auth/login">Login</a></p>
+</mat-card>

@@ -1,0 +1,20 @@
+<div class="app-shell" [class.auth-layout]="isAuthRoute()">
+  @if (isLandingRoute()) {
+    <router-outlet></router-outlet>
+  } @else if (isAuthRoute()) {
+    <main class="auth-content bg-auth">
+      <router-outlet></router-outlet>
+    </main>
+  } @else {
+    <app-navbar></app-navbar>
+    <div class="layout" [class.no-sidebar]="!showGlobalSidebar()">
+      @if (showGlobalSidebar()) {
+        <app-sidebar></app-sidebar>
+      }
+      <main class="content bg-main">
+        <router-outlet></router-outlet>
+      </main>
+    </div>
+    <app-footer></app-footer>
+  }
+</div>

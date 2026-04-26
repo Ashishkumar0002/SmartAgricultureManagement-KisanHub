@@ -1,0 +1,435 @@
+<mat-tab-group animationDuration="250ms" class="employment-tabs">
+  <!-- MY JOBS TAB -->
+  <mat-tab label="My Jobs" class="tab-content">
+    <ng-template mat-tab-label>
+      <mat-icon>work</mat-icon>
+      <span>My Jobs ({{ myJobs().length }})</span>
+    </ng-template>
+
+    <div class="tab-body">
+      <!-- Status Filter -->
+      <div class="filter-section">
+        <button
+          mat-stroked-button
+          [class.active]="jobStatusFilter() === 'all'"
+          (click)="onJobStatusFilterChange('all')"
+          class="filter-btn"
+        >
+          All Jobs
+        </button>
+        <button
+          mat-stroked-button
+          [class.active]="jobStatusFilter() === 'open'"
+          (click)="onJobStatusFilterChange('open')"
+          class="filter-btn"
+        >
+          Open
+        </button>
+        <button
+          mat-stroked-button
+          [class.active]="jobStatusFilter() === 'active'"
+          (click)="onJobStatusFilterChange('active')"
+          class="filter-btn"
+        >
+          Active
+        </button>
+        <button
+          mat-stroked-button
+          [class.active]="jobStatusFilter() === 'closed'"
+          (click)="onJobStatusFilterChange('closed')"
+          class="filter-btn"
+        >
+          Closed
+        </button>
+      </div>
+
+      <!-- Search -->
+      <mat-form-field appearance="outline" class="search-field">
+        <mat-label>Search jobs</mat-label>
+        <input
+          matInput
+          placeholder="Search by title, location..."
+          [ngModel]="myJobsFilter()"
+          (ngModelChange)="myJobsFilter.set($event); filterMyJobs()"
+        />
+        <mat-icon matSuffix>search</mat-icon>
+      </mat-form-field>
+
+      <!-- Loading -->
+      <div *ngIf="isLoadingMyJobs()" class="loading-container">
+        <mat-spinner diameter="40"></mat-spinner>
+      </div>
+
+      <!-- Table -->
+      <div *ngIf="!isLoadingMyJobs()" class="table-wrapper">
+        <table mat-table [dataSource]="myJobsDataSource" class="jobs-table">
+          <!-- Title Column -->
+          <ng-container matColumnDef="title">
+            <th mat-header-cell *matHeaderCellDef>Job Title</th>
+            <td mat-cell *matCellDef="let element">{{ element.title }}</td>
+          </ng-container>
+
+          <!-- Location Column -->
+          <ng-container matColumnDef="location">
+            <th mat-header-cell *matHeaderCellDef>Location</th>
+            <td mat-cell *matCellDef="let element">{{ element.location }}</td>
+          </ng-container>
+
+          <!-- Wage Column -->
+          <ng-container matColumnDef="wage">
+            <th mat-header-cell *matHeaderCellDef>Wage</th>
+            <td mat-cell *matCellDef="let element">₹{{ element.wage }}</td>
+          </ng-container>
+
+          <!-- Duration Column -->
+          <ng-container matColumnDef="duration">
+            <th mat-header-cell *matHeaderCellDef>Duration</th>
+            <td mat-cell *matCellDef="let element">{{ element.duration || 'N/A' }}</td>
+          </ng-container>
+
+          <!-- Status Column -->
+          <ng-container matColumnDef="status">
+            <th mat-header-cell *matHeaderCellDef>Status</th>
+            <td mat-cell *matCellDef="let element">
+              <span class="status-chip" [ngClass]="getStatusBadgeClass(element.status)">
+                {{ getJobVisibilityLabel(element.status) }}
+              </span>
+            </td>
+          </ng-container>
+
+          <!-- Created Date Column -->
+          <ng-container matColumnDef="created_at">
+            <th mat-header-cell *matHeaderCellDef>Posted</th>
+            <td mat-cell *matCellDef="let element">
+              {{ element.created_at | date: 'short' }}
+            </td>
+          </ng-container>
+
+          <!-- Actions Column -->
+          <ng-container matColumnDef="actions">
+            <th mat-header-cell *matHeaderCellDef>Actions</th>
+            <td mat-cell *matCellDef="let element" class="action-cell">
+              <button mat-icon-button matTooltip="Edit" (click)="editJob(element)">
+                <mat-icon>edit</mat-icon>
+              </button>
+              <button mat-icon-button matTooltip="Delete" (click)="deleteJob(element.id)">
+                <mat-icon>delete</mat-icon>
+              </button>
+            </td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="myJobsColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: myJobsColumns;"></tr>
+        </table>
+
+        <mat-paginator #myJobsTablePaginator [pageSizeOptions]="[5, 10, 25]" showFirstLastButtons></mat-paginator>
+      </div>
+    </div>
+  </mat-tab>
+
+  <!-- POST JOB TAB -->
+  <mat-tab label="Post Job" class="tab-content">
+    <ng-template mat-tab-label>
+      <mat-icon>add_circle</mat-icon>
+      <span>Post Job</span>
+    </ng-template>
+
+    <div class="tab-body">
+      <mat-card class="form-card">
+        <mat-card-header>
+          <mat-card-title>Post a New Job</mat-card-title>
+          <mat-card-subtitle>Create a job posting for workers</mat-card-subtitle>
+        </mat-card-header>
+
+        <mat-card-content>
+          <form [formGroup]="postJobForm" (ngSubmit)="submitJob()">
+            <!-- Title -->
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Job Title</mat-label>
+              <input matInput formControlName="title" placeholder="e.g., Harvesting Workers" />
+              <mat-error *ngIf="postJobForm.get('title')?.hasError('required')">Title is required</mat-error>
+              <mat-error *ngIf="postJobForm.get('title')?.hasError('minlength')">
+                Title must be at least 3 characters
+              </mat-error>
+            </mat-form-field>
+
+            <!-- Description -->
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Description</mat-label>
+              <textarea
+                matInput
+                formControlName="description"
+                placeholder="Describe the job requirements..."
+                rows="4"
+              ></textarea>
+              <mat-error *ngIf="postJobForm.get('description')?.hasError('required')">
+                Description is required
+              </mat-error>
+              <mat-error *ngIf="postJobForm.get('description')?.hasError('minlength')">
+                Description must be at least 10 characters
+              </mat-error>
+            </mat-form-field>
+
+            <!-- Location -->
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Location</mat-label>
+              <input matInput formControlName="location" placeholder="e.g., Village XYZ, District ABC" />
+              <mat-error *ngIf="postJobForm.get('location')?.hasError('required')">Location is required</mat-error>
+            </mat-form-field>
+
+            <!-- Wage -->
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Wage (₹)</mat-label>
+              <input matInput type="number" formControlName="wage" placeholder="e.g., 500" />
+              <mat-error *ngIf="postJobForm.get('wage')?.hasError('required')">Wage is required</mat-error>
+              <mat-error *ngIf="postJobForm.get('wage')?.hasError('min')">Wage must be greater than 0</mat-error>
+            </mat-form-field>
+
+            <!-- Duration -->
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Duration</mat-label>
+              <input matInput formControlName="duration" placeholder="e.g., 7 days / Seasonal" />
+            </mat-form-field>
+
+            <!-- Buttons -->
+            <div class="button-group">
+              <button
+                mat-raised-button
+                color="primary"
+                type="submit"
+                [disabled]="!postJobForm.valid || isPostingJob()"
+              >
+                <mat-icon>cloud_upload</mat-icon>
+                <span>{{ isPostingJob() ? 'Posting...' : 'Post Job' }}</span>
+              </button>
+              <button mat-stroked-button type="button" (click)="resetJobForm()">Reset</button>
+            </div>
+          </form>
+        </mat-card-content>
+      </mat-card>
+
+      <mat-card class="info-card">
+        <mat-card-content>
+          <h3>Note:</h3>
+          <p>
+            Jobs are posted in <strong>Open</strong> status and become visible to workers immediately after submission.
+          </p>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </mat-tab>
+
+  <!-- APPLICATIONS TAB -->
+  <mat-tab label="Applications" class="tab-content">
+    <ng-template mat-tab-label>
+      <mat-icon [matBadge]="myApplications().length" matBadgeColor="warn" matBadgeSize="small">
+        assignment
+      </mat-icon>
+      <span>Applications</span>
+    </ng-template>
+
+    <div class="tab-body">
+      <!-- Search -->
+      <mat-form-field appearance="outline" class="search-field">
+        <mat-label>Search applications</mat-label>
+        <input
+          matInput
+          placeholder="Search by applicant, skills, contact..."
+          [ngModel]="applicationsFilter()"
+          (ngModelChange)="applicationsFilter.set($event); filterApplications()"
+        />
+        <mat-icon matSuffix>search</mat-icon>
+      </mat-form-field>
+
+      <!-- Loading -->
+      <div *ngIf="isLoadingMyApplications()" class="loading-container">
+        <mat-spinner diameter="40"></mat-spinner>
+      </div>
+
+      <!-- Table -->
+      <div *ngIf="!isLoadingMyApplications() && myApplications().length > 0" class="table-wrapper">
+        <table mat-table [dataSource]="applicationsDataSource" class="applicants-table">
+          <!-- Applicant Name Column -->
+          <ng-container matColumnDef="applicant_name">
+            <th mat-header-cell *matHeaderCellDef>Name</th>
+            <td mat-cell *matCellDef="let element">{{ element.applicant_name }}</td>
+          </ng-container>
+
+          <!-- Experience Column -->
+          <ng-container matColumnDef="experience">
+            <th mat-header-cell *matHeaderCellDef>Experience</th>
+            <td mat-cell *matCellDef="let element">{{ element.experience || 'N/A' }}</td>
+          </ng-container>
+
+          <!-- Skills Column -->
+          <ng-container matColumnDef="skills">
+            <th mat-header-cell *matHeaderCellDef>Skills</th>
+            <td mat-cell *matCellDef="let element">{{ element.skills || 'N/A' }}</td>
+          </ng-container>
+
+          <!-- Contact Column -->
+          <ng-container matColumnDef="contact_number">
+            <th mat-header-cell *matHeaderCellDef>Contact Number</th>
+            <td mat-cell *matCellDef="let element">{{ element.contact_number || 'N/A' }}</td>
+          </ng-container>
+
+          <!-- Location Column -->
+          <ng-container matColumnDef="location">
+            <th mat-header-cell *matHeaderCellDef>Location</th>
+            <td mat-cell *matCellDef="let element">{{ element.location }}</td>
+          </ng-container>
+
+          <!-- Job Title Column -->
+          <ng-container matColumnDef="job_title">
+            <th mat-header-cell *matHeaderCellDef>Applied Job</th>
+            <td mat-cell *matCellDef="let element">{{ element.job_title }}</td>
+          </ng-container>
+
+          <!-- Status Column -->
+          <ng-container matColumnDef="status">
+            <th mat-header-cell *matHeaderCellDef>Status</th>
+            <td mat-cell *matCellDef="let element">
+              <span class="status-chip" [ngClass]="getStatusBadgeClass(element.status)">
+                {{ element.status | uppercase }}
+              </span>
+            </td>
+          </ng-container>
+
+          <!-- Created Date Column -->
+          <ng-container matColumnDef="created_at">
+            <th mat-header-cell *matHeaderCellDef>Applied On</th>
+            <td mat-cell *matCellDef="let element">
+              {{ element.created_at | date: 'short' }}
+            </td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="applicationsColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: applicationsColumns;"></tr>
+        </table>
+
+        <mat-paginator #applicationsTablePaginator [pageSizeOptions]="[5, 10, 25]" showFirstLastButtons></mat-paginator>
+      </div>
+
+      <div *ngIf="!isLoadingMyApplications() && myApplications().length === 0" class="empty-state">
+        <mat-icon>inbox</mat-icon>
+        <p>You have not applied to any jobs yet</p>
+      </div>
+    </div>
+  </mat-tab>
+
+  <!-- FIND WORK TAB -->
+  <mat-tab label="Available Workers" class="tab-content">
+    <ng-template mat-tab-label>
+      <mat-icon>people</mat-icon>
+      <span>Available Workers</span>
+    </ng-template>
+
+    <div class="tab-body">
+      <!-- Filter -->
+      <form [formGroup]="filterForm" class="filter-form">
+        <mat-form-field appearance="outline" class="search-field">
+          <mat-label>Filter by skill</mat-label>
+          <input
+            matInput
+            formControlName="skill"
+            placeholder="Enter skill..."
+            (input)="filterFindWork()"
+          />
+          <mat-icon matSuffix>build</mat-icon>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="search-field">
+          <mat-label>Filter by location</mat-label>
+          <input 
+            matInput 
+            formControlName="location" 
+            placeholder="Enter location..." 
+            (input)="filterFindWork()" 
+          />
+          <mat-icon matSuffix>location_on</mat-icon>
+        </mat-form-field>
+
+        <button mat-raised-button color="primary" type="button" (click)="loadAvailableWorkers()">
+          <mat-icon>search</mat-icon>
+          Search
+        </button>
+      </form>
+
+      <!-- Loading -->
+      <div *ngIf="isLoadingFindWork()" class="loading-container">
+        <mat-spinner diameter="40"></mat-spinner>
+      </div>
+
+      <!-- Table -->
+      <div *ngIf="!isLoadingFindWork() && availableWorkers().length > 0" class="table-wrapper">
+        <table mat-table [dataSource]="findWorkDataSource" class="find-work-table">
+          <!-- Title Column -->
+          <ng-container matColumnDef="name">
+            <th mat-header-cell *matHeaderCellDef>Name</th>
+            <td mat-cell *matCellDef="let element">{{ element.name }}</td>
+          </ng-container>
+
+          <!-- Skills Column -->
+          <ng-container matColumnDef="skills">
+            <th mat-header-cell *matHeaderCellDef>Skills</th>
+            <td mat-cell *matCellDef="let element">{{ element.skills || element.experience || 'N/A' }}</td>
+          </ng-container>
+
+          <!-- Experience Column -->
+          <ng-container matColumnDef="experience">
+            <th mat-header-cell *matHeaderCellDef>Experience</th>
+            <td mat-cell *matCellDef="let element">{{ element.experience || 'N/A' }}</td>
+          </ng-container>
+
+          <!-- Location Column -->
+          <ng-container matColumnDef="location">
+            <th mat-header-cell *matHeaderCellDef>Location</th>
+            <td mat-cell *matCellDef="let element">{{ element.location || 'N/A' }}</td>
+          </ng-container>
+
+          <!-- Contact Column -->
+          <ng-container matColumnDef="contact">
+            <th mat-header-cell *matHeaderCellDef>Contact Number</th>
+            <td mat-cell *matCellDef="let element">{{ element.contact }}</td>
+          </ng-container>
+
+          <!-- Status Column -->
+          <ng-container matColumnDef="availability_status">
+            <th mat-header-cell *matHeaderCellDef>Availability Status</th>
+            <td mat-cell *matCellDef="let element">
+              <span class="status-chip" [ngClass]="getStatusBadgeClass(element.availability_status)">
+                {{ getWorkerAvailabilityLabel(element.availability_status) }}
+              </span>
+            </td>
+          </ng-container>
+
+          <!-- Actions Column -->
+          <ng-container matColumnDef="actions">
+            <th mat-header-cell *matHeaderCellDef>Actions</th>
+            <td mat-cell *matCellDef="let element" class="action-cell">
+              <button
+                mat-raised-button
+                color="accent"
+                size="small"
+                (click)="contactWorker(element)"
+              >
+                Contact
+              </button>
+            </td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="findWorkColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: findWorkColumns;"></tr>
+        </table>
+
+        <mat-paginator #findWorkTablePaginator [pageSizeOptions]="[5, 10, 25]" showFirstLastButtons></mat-paginator>
+      </div>
+
+      <!-- No Jobs Message -->
+      <div *ngIf="!isLoadingFindWork() && availableWorkers().length === 0" class="empty-state">
+        <mat-icon>inbox</mat-icon>
+        <p>No available workers match your criteria</p>
+      </div>
+    </div>
+  </mat-tab>
+</mat-tab-group>

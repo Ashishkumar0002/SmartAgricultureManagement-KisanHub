@@ -1,0 +1,56 @@
+@use '@angular/material' as mat;
+@use './app/shared/styles/background';
+
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Sora:wght@600;700;800&display=swap');
+
+:root {
+  --sams-primary: #2e7d32;
+  --sams-secondary: #81c784;
+  --sams-bg: #eef6ed;
+  --sams-surface: #ffffff;
+  --sams-text: #333333;
+  --sams-muted: #6b7280;
+  --sams-shadow: 0 10px 30px rgba(17, 24, 39, 0.08);
+  --sams-radius: 16px;
+}
+
+html {
+  height: 100%;
+  scroll-behavior: smooth;
+  @include mat.theme(
+    (
+      color: (
+        primary: mat.$green-palette,
+        tertiary: mat.$green-palette,
+      ),
+      typography: Poppins,
+      density: 0,
+    )
+  );
+}
+
+body {
+  margin: 0;
+  min-height: 100%;
+  background: var(--sams-bg);
+  color: var(--sams-text);
+  font-family: 'Poppins', sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+.page-card {
+  border-radius: var(--sams-radius);
+  box-shadow: var(--sams-shadow);
+  border: 1px solid rgba(46, 125, 50, 0.08);
+  background: var(--sams-surface);
+}
+
+.section-title {
+  margin: 0 0 16px;
+  font-size: 1.2rem;
+  font-weight: 600;
+}

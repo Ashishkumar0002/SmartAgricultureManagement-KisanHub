@@ -1,0 +1,49 @@
+<div class="landing-root">
+  <ng-container *ngComponentOutlet="landingNavbarComponent"></ng-container>
+
+  <section id="home">
+    <ng-container *ngComponentOutlet="landingHeroComponent"></ng-container>
+  </section>
+
+  <section class="landing-stats" aria-label="Platform statistics">
+    <article class="stat-item scroll-reveal revealed">
+      <h3>256K+</h3>
+      <p>Happy Farmers</p>
+    </article>
+    <article class="stat-item scroll-reveal revealed">
+      <h3>98%</h3>
+      <p>Crop Advisory Success</p>
+    </article>
+    <article class="stat-item scroll-reveal revealed">
+      <h3>308+</h3>
+      <p>Active Agro Experts</p>
+    </article>
+    <article class="stat-item scroll-reveal revealed">
+      <h3>20+</h3>
+      <p>States Served</p>
+    </article>
+  </section>
+
+  <main>
+    <section id="features">
+      <ng-container *ngComponentOutlet="featuresSectionComponent"></ng-container>
+    </section>
+    <section id="services">
+      <ng-container *ngComponentOutlet="servicesSectionComponent"></ng-container>
+    </section>
+    <section id="about">
+      <ng-container *ngComponentOutlet="aboutSectionComponent"></ng-container>
+    </section>
+    <section id="why-choose">
+      <ng-container *ngComponentOutlet="whyChooseSectionComponent"></ng-container>
+    </section>
+    <section id="testimonials">
+      <ng-container *ngComponentOutlet="testimonialsSectionComponent"></ng-container>
+    </section>
+    <section id="contact">
+      <ng-container *ngComponentOutlet="ctaSectionComponent"></ng-container>
+    </section>
+  </main>
+
+  <ng-container *ngComponentOutlet="landingFooterComponent"></ng-container>
+</div>

@@ -1,0 +1,139 @@
+:host {
+  display: block;
+}
+
+.landing-root {
+  --land-primary: #0b3d2e;
+  --land-secondary: #1f6b4c;
+  --land-accent: #d9b45b;
+  --land-ink: #f2f7f1;
+  --land-muted: #b8c9be;
+  --land-surface: rgba(17, 50, 37, 0.78);
+  --land-soft: rgba(18, 56, 42, 0.66);
+  --land-border: rgba(172, 214, 191, 0.25);
+  --land-shadow: 0 18px 45px rgba(4, 13, 10, 0.36);
+  --land-radius: 18px;
+
+  font-family: 'Manrope', 'Segoe UI', sans-serif;
+  color: var(--land-ink);
+  background:
+    radial-gradient(circle at 12% 8%, rgba(63, 140, 106, 0.28), transparent 24%),
+    radial-gradient(circle at 86% 2%, rgba(217, 180, 91, 0.12), transparent 21%),
+    linear-gradient(180deg, #051d16 0%, #08271d 52%, #041711 100%);
+}
+
+main {
+  position: relative;
+  z-index: 1;
+}
+
+.landing-stats {
+  width: min(1180px, calc(100% - 26px));
+  margin: -48px auto 24px;
+  position: relative;
+  z-index: 2;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.stat-item {
+  border-radius: 16px;
+  border: 1px solid var(--land-border);
+  background: linear-gradient(135deg, rgba(17, 60, 44, 0.92), rgba(12, 40, 29, 0.88));
+  backdrop-filter: blur(8px);
+  padding: 18px;
+  box-shadow: var(--land-shadow);
+
+  h3 {
+    margin: 0;
+    font-family: 'Sora', 'Poppins', sans-serif;
+    font-size: clamp(1.5rem, 2.5vw, 2rem);
+    color: #f5d98c;
+  }
+
+  p {
+    margin: 8px 0 0;
+    color: #cee2d2;
+    font-size: 0.92rem;
+    letter-spacing: 0.02em;
+  }
+}
+
+.scroll-reveal {
+  opacity: 0;
+  transform: translateY(26px) scale(0.98);
+  transition: opacity 700ms ease, transform 700ms ease;
+}
+
+.scroll-reveal.revealed {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+:host ::ng-deep .section-block {
+  position: relative;
+
+  .section-head,
+  .trust-head,
+  .about-header {
+    .tag,
+    .section-tag {
+      color: #94d2a8;
+    }
+
+    h2 {
+      color: #ecf6ee;
+    }
+  }
+
+  .feature-card,
+  .service-card,
+  .testimonial-card,
+  .reason-card,
+  .story-block,
+  .feature-panel,
+  .service-content {
+    border-color: var(--land-border);
+    background: linear-gradient(160deg, rgba(18, 58, 43, 0.9), rgba(11, 39, 29, 0.84));
+    color: #eaf4ea;
+    box-shadow: 0 20px 38px rgba(0, 0, 0, 0.28);
+  }
+
+  p,
+  .quote,
+  .intro,
+  .lead {
+    color: #bcd0c2;
+  }
+
+  h3,
+  .name {
+    color: #f5faf5;
+  }
+
+  .icon-wrap,
+  .reason-icon {
+    background: linear-gradient(130deg, #2f8f61, #0d4d38);
+    color: #f1fff4;
+  }
+
+  .content-wrap,
+  .about-card {
+    background: linear-gradient(145deg, rgba(13, 45, 34, 0.88), rgba(9, 33, 25, 0.86));
+    border-color: var(--land-border);
+  }
+}
+
+@media (max-width: 980px) {
+  .landing-stats {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    margin-top: 20px;
+  }
+}
+
+@media (max-width: 620px) {
+  .landing-stats {
+    grid-template-columns: 1fr;
+  }
+}

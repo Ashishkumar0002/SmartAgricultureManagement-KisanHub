@@ -1,0 +1,23 @@
+<section class="section-block" appScrollReveal>
+  <div class="content-wrap">
+    <div class="intro">
+      <p class="tag">Why Choose Us</p>
+      <h2>Everything needed for smarter, connected agriculture</h2>
+      <p class="lead">
+        From crop planning to expert advisory, our platform combines technology and field knowledge to help farmers act confidently.
+      </p>
+    </div>
+
+    <div class="reason-grid">
+      @for (reason of reasons; track reason.title) {
+        <article class="reason-card">
+          <div class="reason-icon">
+            <mat-icon>{{ reason.icon }}</mat-icon>
+          </div>
+          <h3>{{ reason.title }}</h3>
+          <p>{{ reason.text }}</p>
+        </article>
+      }
+    </div>
+  </div>
+</section>

@@ -1,0 +1,14 @@
+<aside class="sidebar">
+	<div class="sidebar-brand">
+		<span class="brand-name">KisanHub</span>
+	</div>
+	<h3>Navigation</h3>
+	<nav>
+		@for (item of navItems(); track item.route) {
+			<a [routerLink]="item.route" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+				<mat-icon>{{ item.icon }}</mat-icon>
+				<span>{{ item.label }}</span>
+			</a>
+		}
+	</nav>
+</aside>

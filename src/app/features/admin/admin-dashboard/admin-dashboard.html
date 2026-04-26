@@ -1,0 +1,231 @@
+<!-- Hero Section -->
+<section class="hero-section">
+  <div class="hero-container">
+    <div class="hero-grid">
+      <div class="hero-content">
+        <h1 class="hero-title">Welcome back, Admin</h1>
+        <p class="hero-subtitle">Here's what's happening today</p>
+        <button mat-raised-button color="primary" class="hero-button">View Reports</button>
+      </div>
+      <div class="hero-image">
+        <div class="agriculture-icon">
+          <mat-icon class="icon-large">agriculture</mat-icon>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Management Tabs -->
+<section class="management-section">
+  <div class="management-container">
+    <h2 class="section-title">Management Console</h2>
+    <mat-card class="management-card">
+      <mat-tab-group
+        [selectedIndex]="selectedTab()"
+        (selectedIndexChange)="selectTab($event)"
+        animationDuration="300">
+        <mat-tab>
+          <ng-template mat-tab-label>
+            <mat-icon class="tab-icon">group</mat-icon>
+            User Management
+          </ng-template>
+          <app-user-management></app-user-management>
+        </mat-tab>
+
+        <mat-tab>
+          <ng-template mat-tab-label>
+            <mat-icon class="tab-icon">description</mat-icon>
+            Content Management
+          </ng-template>
+          <app-content-management></app-content-management>
+        </mat-tab>
+
+        <mat-tab>
+          <ng-template mat-tab-label>
+            <mat-icon class="tab-icon">agriculture</mat-icon>
+            Equipment
+          </ng-template>
+          <app-equipment-management></app-equipment-management>
+        </mat-tab>
+
+        <mat-tab>
+          <ng-template mat-tab-label>
+            <mat-icon class="tab-icon">badge</mat-icon>
+            Employment
+          </ng-template>
+          <app-admin-employment></app-admin-employment>
+        </mat-tab>
+
+        <mat-tab>
+          <ng-template mat-tab-label>
+            <mat-icon class="tab-icon">analytics</mat-icon>
+            Analytics
+          </ng-template>
+          <app-analytics></app-analytics>
+        </mat-tab>
+
+        <mat-tab>
+          <ng-template mat-tab-label>
+            <mat-icon class="tab-icon">history</mat-icon>
+            Activity Logs
+          </ng-template>
+          <app-activity-monitoring></app-activity-monitoring>
+        </mat-tab>
+      </mat-tab-group>
+    </mat-card>
+  </div>
+</section>
+
+<!-- KPI Cards -->
+<section class="kpi-section">
+  <div class="kpi-container">
+    <div class="kpi-grid">
+      @for (card of statCards(); track card.title) {
+        <mat-card class="kpi-card">
+          <div class="kpi-content">
+            <div class="kpi-text">
+              <p class="kpi-label">{{ card.title }}</p>
+              <p class="kpi-value">{{ card.value }}</p>
+            </div>
+            <div class="kpi-icon">
+              <mat-icon>{{ card.icon }}</mat-icon>
+            </div>
+          </div>
+        </mat-card>
+      }
+    </div>
+  </div>
+</section>
+
+<!-- Analytics Section -->
+<section class="analytics-section">
+  <div class="analytics-container">
+    <h2 class="section-title">Analytics Overview</h2>
+    <div class="analytics-grid">
+      <!-- User Growth Chart -->
+      <mat-card class="chart-card large">
+        <div class="chart-header">
+          <h3 class="chart-title">User Growth Trend</h3>
+        </div>
+        <div class="chart-content">
+          <canvas baseChart
+                  [data]="userGrowthChartData()"
+                  [options]="userGrowthChartOptions"
+                  [type]="'line'">
+          </canvas>
+        </div>
+      </mat-card>
+
+      <!-- Crop Distribution Chart -->
+      <mat-card class="chart-card">
+        <div class="chart-header">
+          <h3 class="chart-title">Crop Distribution</h3>
+        </div>
+        <div class="chart-content">
+          <canvas baseChart
+                  [data]="cropDistributionChartData()"
+                  [options]="cropDistributionChartOptions"
+                  [type]="'pie'">
+          </canvas>
+        </div>
+      </mat-card>
+    </div>
+
+    <!-- Feature Usage Chart -->
+    <mat-card class="chart-card full">
+      <div class="chart-header">
+        <h3 class="chart-title">Feature Usage</h3>
+      </div>
+      <div class="chart-content">
+        <canvas baseChart
+                [data]="featureUsageChartData()"
+                [options]="featureUsageChartOptions"
+                [type]="'bar'">
+        </canvas>
+      </div>
+    </mat-card>
+  </div>
+</section>
+
+<!-- Smart Content Sections -->
+<section class="content-section">
+  <div class="content-container">
+    <!-- Top Crops Section -->
+    <div class="content-grid">
+      <div class="content-text">
+        <h3 class="content-title">Top Crops This Season</h3>
+        <p class="content-description">Discover the most popular crops being cultivated by our farmers</p>
+        <div class="crop-list">
+          @for (crop of getTopCrops().slice(0, 5); track crop.name) {
+            <div class="crop-item">
+              <span class="crop-name">{{ crop.name }}</span>
+              <span class="crop-count">{{ crop.count }} farmers</span>
+            </div>
+          }
+        </div>
+      </div>
+      <div class="content-image">
+        <div class="image-placeholder">
+          <mat-icon class="image-icon">grass</mat-icon>
+        </div>
+      </div>
+    </div>
+
+    <!-- Alerts & Activity Section -->
+    <div class="content-grid reverse">
+      <div class="content-image">
+        <div class="image-placeholder orange">
+          <mat-icon class="image-icon">notifications</mat-icon>
+        </div>
+      </div>
+      <div class="content-text">
+        <h3 class="content-title">Recent Alerts & Activity</h3>
+        <p class="content-description">Stay updated with the latest system activities and alerts</p>
+        <div class="activity-list">
+          <div class="activity-item">
+            <p class="activity-title">Weather Alert System</p>
+            <p class="activity-desc">Heavy rainfall warning sent to farmers</p>
+          </div>
+          <div class="activity-item">
+            <p class="activity-title">Equipment Maintenance</p>
+            <p class="activity-desc">Scheduled maintenance completed</p>
+          </div>
+          <div class="activity-item">
+            <p class="activity-title">New Farmer Onboarding</p>
+            <p class="activity-desc">50 new farmers joined this week</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Activity Timeline -->
+<section class="timeline-section">
+  <div class="timeline-container">
+    <h2 class="section-title center">Activity Timeline</h2>
+    <div class="timeline">
+      @for (activity of activities(); track activity.id) {
+        <div class="timeline-item">
+          <div class="timeline-icon {{ activity.type.toLowerCase() }}">
+            <mat-icon>
+              {{ activity.type === 'CREATE' ? 'add' : activity.type === 'UPDATE' ? 'edit' : 'notifications' }}
+            </mat-icon>
+          </div>
+          <div class="timeline-content">
+            <div class="timeline-header">
+              <span class="activity-type {{ activity.type.toLowerCase() }}">{{ activity.type }}</span>
+              <time class="timeline-time">{{ activity.timestamp | date:'short' }}</time>
+            </div>
+            <h4 class="timeline-title">{{ activity.title }}</h4>
+            <p class="timeline-description">{{ activity.description }}</p>
+            @if (activity.user) {
+              <p class="timeline-user">by {{ activity.user }}</p>
+            }
+          </div>
+        </div>
+      }
+    </div>
+  </div>
+</section>

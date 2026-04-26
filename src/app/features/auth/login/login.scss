@@ -1,0 +1,56 @@
+:host {
+	display: block;
+	width: 100%;
+}
+
+.auth-shell {
+	width: 100%;
+	display: grid;
+	place-items: center;
+	padding: clamp(10px, 2vw, 24px);
+	border-radius: 24px;
+}
+
+.auth-card {
+	width: min(100%, 1100px);
+	padding: 18px;
+	border-radius: 20px;
+}
+
+h2 {
+	margin: 0;
+}
+
+p {
+	margin: 8px 0 20px;
+	color: var(--sams-muted);
+}
+
+form {
+	display: grid;
+	gap: 18px;
+}
+
+mat-form-field {
+	width: 100%;
+}
+
+button[type='submit'] {
+	height: 48px;
+}
+
+.switch {
+	margin-top: 18px;
+	font-size: 0.9rem;
+}
+
+a {
+	color: #1b5e20;
+	font-weight: 600;
+}
+
+@media (max-width: 640px) {
+	.auth-card {
+		padding: 24px;
+	}
+}

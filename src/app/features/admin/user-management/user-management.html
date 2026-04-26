@@ -1,0 +1,146 @@
+<section class="user-management">
+	<h2 class="section-title">User Management</h2>
+
+	<!-- Filter & Search Section -->
+	<mat-card class="filters-card">
+		<div class="filter-row">
+			<mat-form-field appearance="outline" class="search-field">
+				<mat-label>Search Users</mat-label>
+				<input
+					matInput
+					[(ngModel)]="searchText"
+					(ngModelChange)="onSearchChange()"
+					placeholder="Search by name, username, or email"
+				/>
+				<mat-icon matSuffix>search</mat-icon>
+			</mat-form-field>
+
+			<mat-form-field appearance="outline" class="role-filter">
+				<mat-label>Filter by Role</mat-label>
+				<mat-select [(ngModel)]="selectedRole" (ngModelChange)="onRoleChange()">
+					<mat-option value="all">All Roles</mat-option>
+					<mat-option value="admin">Admin</mat-option>
+					<mat-option value="farmer">Farmer</mat-option>
+					<mat-option value="expert">Expert</mat-option>
+				</mat-select>
+			</mat-form-field>
+
+			<mat-form-field appearance="outline" class="role-filter">
+				<mat-label>Filter by Status</mat-label>
+				<mat-select [(ngModel)]="selectedStatus" (ngModelChange)="onStatusChange()">
+					<mat-option value="all">All Statuses</mat-option>
+					<mat-option value="active">Active</mat-option>
+					<mat-option value="suspended">Suspended</mat-option>
+				</mat-select>
+			</mat-form-field>
+
+			<mat-form-field appearance="outline" class="role-filter">
+				<mat-label>Region</mat-label>
+				<input
+					matInput
+					[(ngModel)]="selectedRegion"
+					(ngModelChange)="onRegionChange()"
+					placeholder="e.g. Punjab"
+				/>
+			</mat-form-field>
+		</div>
+	</mat-card>
+
+	<!-- Users Table -->
+	<mat-card class="table-card">
+		<table mat-table [dataSource]="filteredUsers()">
+			<!-- ID Column -->
+			<ng-container matColumnDef="id">
+				<th mat-header-cell *matHeaderCellDef>ID</th>
+				<td mat-cell *matCellDef="let row">{{ row.id }}</td>
+			</ng-container>
+
+			<!-- Username Column -->
+			<ng-container matColumnDef="username">
+				<th mat-header-cell *matHeaderCellDef>Username</th>
+				<td mat-cell *matCellDef="let row">{{ row.username }}</td>
+			</ng-container>
+
+			<!-- Full Name Column -->
+			<ng-container matColumnDef="fullName">
+				<th mat-header-cell *matHeaderCellDef>Full Name</th>
+				<td mat-cell *matCellDef="let row">{{ row.full_name }}</td>
+			</ng-container>
+
+			<!-- Email Column -->
+			<ng-container matColumnDef="email">
+				<th mat-header-cell *matHeaderCellDef>Email</th>
+				<td mat-cell *matCellDef="let row">{{ row.email }}</td>
+			</ng-container>
+
+			<!-- Role Column -->
+			<ng-container matColumnDef="role">
+				<th mat-header-cell *matHeaderCellDef>Role</th>
+				<td mat-cell *matCellDef="let row">
+					<span class="role-badge" [class]="'role-' + row.role">
+						{{ row.role }}
+					</span>
+				</td>
+			</ng-container>
+
+			<ng-container matColumnDef="status">
+				<th mat-header-cell *matHeaderCellDef>Status</th>
+				<td mat-cell *matCellDef="let row">
+					<span class="role-badge" [class]="'role-' + (row.status || 'active')">
+						{{ row.status || 'active' }}
+					</span>
+				</td>
+			</ng-container>
+
+			<!-- Actions Column -->
+			<ng-container matColumnDef="actions">
+				<th mat-header-cell *matHeaderCellDef>Actions</th>
+				<td mat-cell *matCellDef="let row" class="actions-cell">
+					<button
+						mat-icon-button
+						matTooltip="View Profile"
+						(click)="viewProfile(row)"
+						color="primary"
+					>
+						<mat-icon>visibility</mat-icon>
+					</button>
+					<button
+						mat-icon-button
+						matTooltip="Suspend User"
+						(click)="updateUserStatus(row, 'suspended')"
+						color="warn"
+					>
+						<mat-icon>block</mat-icon>
+					</button>
+					<button
+						mat-icon-button
+						matTooltip="Activate User"
+						(click)="updateUserStatus(row, 'active')"
+						color="accent"
+					>
+						<mat-icon>check_circle</mat-icon>
+					</button>
+					<button
+						mat-icon-button
+						matTooltip="Delete User"
+						(click)="deleteUser(row.id)"
+						color="warn"
+					>
+						<mat-icon>delete</mat-icon>
+					</button>
+				</td>
+			</ng-container>
+
+			<tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+			<tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+		</table>
+
+		<!-- Paginator -->
+		<mat-paginator
+			[pageSizeOptions]="[5, 10, 20, 50]"
+			[pageSize]="pageSize"
+			[length]="totalUsers"
+			(page)="onPageChange($event)"
+		></mat-paginator>
+	</mat-card>
+</section>

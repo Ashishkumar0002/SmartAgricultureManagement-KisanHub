@@ -1,0 +1,18 @@
+<section class="section-block" appScrollReveal>
+  <div class="section-head">
+    <p class="tag">Our Services</p>
+    <h2>Actionable services for better yield and income</h2>
+  </div>
+
+  <div class="service-grid">
+    @for (item of services; track item.title) {
+      <mat-card class="service-card">
+        <img [src]="item.image" [alt]="item.title" loading="lazy" decoding="async" />
+        <div class="service-content">
+          <h3>{{ item.title }}</h3>
+          <p>{{ item.description }}</p>
+        </div>
+      </mat-card>
+    }
+  </div>
+</section>

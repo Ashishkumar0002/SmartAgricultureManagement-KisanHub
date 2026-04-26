@@ -1,0 +1,106 @@
+<section class="expert-assignment">
+	<h2 class="section-title">Expert Assignment Management</h2>
+
+	<!-- Status Filter -->
+	<mat-card class="filters-card">
+		<div class="filter-row">
+			<mat-form-field appearance="outline">
+				<mat-label>Filter by Status</mat-label>
+				<mat-select [(ngModel)]="selectedStatus" (ngModelChange)="filterAssignments()">
+					<mat-option value="all">All Statuses</mat-option>
+					<mat-option value="pending">Pending</mat-option>
+					<mat-option value="assigned">Assigned</mat-option>
+					<mat-option value="completed">Completed</mat-option>
+				</mat-select>
+			</mat-form-field>
+		</div>
+	</mat-card>
+
+	<!-- Assignments Table -->
+	<mat-card class="table-card">
+		<div class="table-header">
+			<h3>Advisory Requests & Assignments</h3>
+			<span class="total-count">Total: {{ totalAssignments }}</span>
+		</div>
+
+		<table mat-table [dataSource]="filteredAssignments()">
+			<!-- ID Column -->
+			<ng-container matColumnDef="id">
+				<th mat-header-cell *matHeaderCellDef>Request ID</th>
+				<td mat-cell *matCellDef="let row">{{ row.id }}</td>
+			</ng-container>
+
+			<!-- Question Column -->
+			<ng-container matColumnDef="question">
+				<th mat-header-cell *matHeaderCellDef>Advisory Question</th>
+				<td mat-cell *matCellDef="let row">
+					<span class="truncate-text">{{ row.advisory_id }}</span>
+				</td>
+			</ng-container>
+
+			<!-- Farmer Column -->
+			<ng-container matColumnDef="farmerEmail">
+				<th mat-header-cell *matHeaderCellDef>Farmer</th>
+				<td mat-cell *matCellDef="let row">Farmer {{ row.advisory_id }}</td>
+			</ng-container>
+
+			<!-- Expert Column -->
+			<ng-container matColumnDef="expertEmail">
+				<th mat-header-cell *matHeaderCellDef>Assigned Expert</th>
+				<td mat-cell *matCellDef="let row">Expert {{ row.expert_id }}</td>
+			</ng-container>
+
+			<!-- Status Column -->
+			<ng-container matColumnDef="status">
+				<th mat-header-cell *matHeaderCellDef>Status</th>
+				<td mat-cell *matCellDef="let row">
+					<span class="status-badge" [ngClass]="getStatusClass(row.status)">
+						{{ row.status | uppercase }}
+					</span>
+				</td>
+			</ng-container>
+
+			<!-- Assigned Date Column -->
+			<ng-container matColumnDef="assignedDate">
+				<th mat-header-cell *matHeaderCellDef>Assigned Date</th>
+				<td mat-cell *matCellDef="let row">
+					{{ (row.assignment_date | date: 'short') || '-' }}
+				</td>
+			</ng-container>
+
+			<!-- Actions Column -->
+			<ng-container matColumnDef="actions">
+				<th mat-header-cell *matHeaderCellDef>Actions</th>
+				<td mat-cell *matCellDef="let row" class="actions-cell">
+					<button
+						mat-icon-button
+						matTooltip="Mark as Completed"
+						(click)="markAsCompleted(row.id)"
+						color="primary"
+						[disabled]="row.status === 'completed'"
+					>
+						<mat-icon>check_circle</mat-icon>
+					</button>
+					<button
+						mat-icon-button
+						matTooltip="View Details"
+						color="accent"
+					>
+						<mat-icon>visibility</mat-icon>
+					</button>
+				</td>
+			</ng-container>
+
+			<tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+			<tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+		</table>
+
+		<!-- Paginator -->
+		<mat-paginator
+			[pageSizeOptions]="[5, 10, 20, 50]"
+			[pageSize]="pageSize"
+			[length]="totalAssignments"
+			(page)="onPageChange($event)"
+		></mat-paginator>
+	</mat-card>
+</section>

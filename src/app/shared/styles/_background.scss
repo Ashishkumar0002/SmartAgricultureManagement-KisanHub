@@ -1,0 +1,78 @@
+:root {
+  --bg-main-gradient:
+    radial-gradient(circle at 12% 10%, rgba(129, 199, 132, 0.22), transparent 26%),
+    radial-gradient(circle at 82% 8%, rgba(46, 125, 50, 0.14), transparent 24%),
+    linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%);
+  --bg-dashboard-gradient:
+    radial-gradient(circle at 90% 18%, rgba(46, 125, 50, 0.12), transparent 30%),
+    radial-gradient(circle at 12% 12%, rgba(129, 199, 132, 0.2), transparent 36%),
+    linear-gradient(145deg, #f3fbf3 0%, #e2f1e2 100%);
+  --bg-auth-overlay:
+    linear-gradient(135deg, rgba(20, 50, 26, 0.8) 0%, rgba(46, 125, 50, 0.6) 56%, rgba(22, 62, 31, 0.78) 100%);
+  --bg-auth-image: url('https://images.unsplash.com/photo-1625246333195-78d9c38ad449?auto=format&fit=crop&w=1900&q=80');
+}
+
+.bg-main,
+.bg-dashboard,
+.bg-auth {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+}
+
+.bg-main {
+  background: var(--bg-main-gradient);
+}
+
+.bg-dashboard {
+  background: var(--bg-dashboard-gradient);
+}
+
+.bg-main::before,
+.bg-dashboard::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    linear-gradient(rgba(255, 255, 255, 0.45) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.45) 1px, transparent 1px);
+  background-size: 28px 28px;
+  opacity: 0.18;
+}
+
+.bg-auth {
+  background-image: var(--bg-auth-overlay), var(--bg-auth-image);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.bg-auth::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background: radial-gradient(circle at 22% 18%, rgba(181, 255, 180, 0.22), transparent 38%);
+}
+
+.glass-card {
+  background: rgba(255, 255, 255, 0.75) !important;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  box-shadow: 0 14px 40px rgba(8, 23, 10, 0.24);
+  border-radius: 20px;
+}
+
+.page-card {
+  transition: transform 220ms ease, box-shadow 220ms ease, border-color 220ms ease;
+}
+
+.page-card:hover {
+  transform: translateY(-3px);
+  border-color: rgba(46, 125, 50, 0.22);
+  box-shadow: 0 16px 34px rgba(12, 30, 15, 0.12);
+}

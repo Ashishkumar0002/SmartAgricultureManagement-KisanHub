@@ -1,0 +1,151 @@
+<section class="content-management">
+	<h2 class="section-title">Dynamic Content Management</h2>
+
+	<!-- Add Content Button -->
+	<div class="action-bar">
+		<button mat-raised-button color="primary" (click)="showForm.set(!showForm())">
+			<mat-icon>add</mat-icon>
+			{{ showForm() ? 'Cancel' : 'Add New Content' }}
+		</button>
+	</div>
+
+	<!-- Add Content Form -->
+	<mat-card *ngIf="showForm()" class="form-card">
+		<h3>Create New Content</h3>
+		<form [formGroup]="contentForm" (ngSubmit)="submitForm()" class="content-form">
+			<mat-form-field appearance="outline" class="full-width">
+				<mat-label>Title</mat-label>
+				<input matInput formControlName="title" placeholder="Enter content title" />
+				<mat-error *ngIf="contentForm.get('title')?.hasError('required')">
+					Title is required
+				</mat-error>
+				<mat-error *ngIf="contentForm.get('title')?.hasError('minlength')">
+					Title must be at least 3 characters
+				</mat-error>
+			</mat-form-field>
+
+			<mat-form-field appearance="outline" class="full-width">
+				<mat-label>Category</mat-label>
+				<mat-select formControlName="category">
+					<mat-option value="weather">Weather Info</mat-option>
+					<mat-option value="market">Market Prices</mat-option>
+					<mat-option value="technique">Farming Techniques</mat-option>
+					<mat-option value="disease_prevention">Disease Prevention</mat-option>
+				</mat-select>
+			</mat-form-field>
+
+			<mat-form-field appearance="outline" class="full-width">
+				<mat-label>Location (Optional)</mat-label>
+				<input matInput formControlName="location" placeholder="e.g., Delhi, Punjab" />
+			</mat-form-field>
+
+			<mat-form-field appearance="outline" class="full-width">
+				<mat-label>Description</mat-label>
+				<textarea
+					matInput
+					formControlName="description"
+					rows="4"
+					placeholder="Enter detailed description"
+				></textarea>
+				<mat-error *ngIf="contentForm.get('description')?.hasError('required')">
+					Description is required
+				</mat-error>
+				<mat-error *ngIf="contentForm.get('description')?.hasError('minlength')">
+					Description must be at least 10 characters
+				</mat-error>
+			</mat-form-field>
+
+			<div class="form-actions">
+				<button type="submit" mat-raised-button color="primary" [disabled]="!contentForm.valid">
+					<mat-icon>save</mat-icon>
+					Save Content
+				</button>
+				<button type="button" mat-stroked-button (click)="showForm.set(false)">
+					Cancel
+				</button>
+			</div>
+		</form>
+	</mat-card>
+
+	<!-- Filter Section -->
+	<mat-card class="filters-card">
+		<mat-form-field appearance="outline">
+			<mat-label>Filter by Category</mat-label>
+			<mat-select [(ngModel)]="selectedCategory" (ngModelChange)="onCategoryChange()">
+				<mat-option value="all">All Categories</mat-option>
+				<mat-option value="weather">Weather Info</mat-option>
+				<mat-option value="market">Market Prices</mat-option>
+				<mat-option value="technique">Farming Techniques</mat-option>
+				<mat-option value="disease_prevention">Disease Prevention</mat-option>
+			</mat-select>
+		</mat-form-field>
+	</mat-card>
+
+	<!-- Contents Table -->
+	<mat-card class="table-card">
+		<table mat-table [dataSource]="filteredContents()">
+			<!-- ID Column -->
+			<ng-container matColumnDef="id">
+				<th mat-header-cell *matHeaderCellDef>Request ID</th>
+				<td mat-cell *matCellDef="let row">{{ row.id }}</td>
+			</ng-container>
+
+			<!-- Title Column -->
+			<ng-container matColumnDef="title">
+				<th mat-header-cell *matHeaderCellDef>Title</th>
+				<td mat-cell *matCellDef="let row">{{ row.title }}</td>
+			</ng-container>
+
+			<!-- Category Column -->
+			<ng-container matColumnDef="category">
+				<th mat-header-cell *matHeaderCellDef>Category</th>
+				<td mat-cell *matCellDef="let row">
+					<span class="category-badge" [style.backgroundColor]="getCategoryColor(row.category)">
+						{{ row.category | uppercase }}
+					</span>
+				</td>
+			</ng-container>
+
+			<!-- Location Column -->
+			<ng-container matColumnDef="location">
+				<th mat-header-cell *matHeaderCellDef>Location</th>
+				<td mat-cell *matCellDef="let row">{{ row.location || '-' }}</td>
+			</ng-container>
+
+			<!-- Created Date Column -->
+			<ng-container matColumnDef="createdAt">
+				<th mat-header-cell *matHeaderCellDef>Created</th>
+				<td mat-cell *matCellDef="let row">{{ (row.created_at | date: 'short') || '-' }}</td>
+			</ng-container>
+
+			<!-- Actions Column -->
+			<ng-container matColumnDef="actions">
+				<th mat-header-cell *matHeaderCellDef>Actions</th>
+				<td mat-cell *matCellDef="let row" class="actions-cell">
+					<button mat-icon-button matTooltip="Edit" color="primary">
+						<mat-icon>edit</mat-icon>
+					</button>
+					<button
+						mat-icon-button
+						matTooltip="Delete"
+						color="warn"
+						(click)="deleteContent(row.id)"
+					>
+						<mat-icon>delete</mat-icon>
+					</button>
+				</td>
+			</ng-container>
+
+			<tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+			<tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+		</table>
+
+		<!-- Paginator -->
+		<mat-paginator
+			[pageSizeOptions]="[5, 10, 20, 50]"
+			[pageSize]="pageSize"
+			[length]="totalContents"
+			(page)="onPageChange($event)"
+		></mat-paginator>
+	</mat-card>
+</section>

@@ -1,0 +1,33 @@
+<section class="bg-auth auth-shell">
+	<mat-card class="auth-card page-card chooser-card glass-card">
+		<div class="register-header">
+			<mat-icon>how_to_reg</mat-icon>
+			<div>
+				<h2>Create Your KisanHub Account</h2>
+				<p>Select your role and complete the form.</p>
+			</div>
+		</div>
+
+	<mat-tab-group>
+		<mat-tab>
+			<ng-template mat-tab-label>
+				<mat-icon>agriculture</mat-icon>
+				<span>Farmer</span>
+			</ng-template>
+			<div class="tab-body">
+				<app-farmer-register></app-farmer-register>
+			</div>
+		</mat-tab>
+
+		<mat-tab>
+			<ng-template mat-tab-label>
+				<mat-icon>science</mat-icon>
+				<span>Expert</span>
+			</ng-template>
+			<div class="tab-body">
+				<app-expert-register></app-expert-register>
+			</div>
+		</mat-tab>
+	</mat-tab-group>
+  </mat-card>
+</section>

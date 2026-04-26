@@ -1,0 +1,125 @@
+<section class="activity-monitoring">
+	<h2 class="section-title">Activity Monitoring & Logs</h2>
+
+	<!-- Filter Section -->
+	<mat-card class="filters-card">
+		<div class="filter-row">
+			<mat-form-field appearance="outline">
+				<mat-label>Filter by Action</mat-label>
+				<mat-select [(ngModel)]="filterAction" (ngModelChange)="onActionChange()">
+					<mat-option value="all">All Actions</mat-option>
+					<mat-option value="create">Create</mat-option>
+					<mat-option value="update">Update</mat-option>
+					<mat-option value="delete">Delete</mat-option>
+					<mat-option value="login">Login</mat-option>
+					<mat-option value="logout">Logout</mat-option>
+				</mat-select>
+			</mat-form-field>
+
+			<mat-form-field appearance="outline">
+				<mat-label>Time Period</mat-label>
+				<mat-select [(ngModel)]="filterDays" (ngModelChange)="onDaysChange()">
+					<mat-option [value]="1">Last 24 Hours</mat-option>
+					<mat-option [value]="7">Last 7 Days</mat-option>
+					<mat-option [value]="30">Last 30 Days</mat-option>
+					<mat-option [value]="90">Last 90 Days</mat-option>
+				</mat-select>
+			</mat-form-field>
+
+			<mat-form-field appearance="outline">
+				<mat-label>Log Level</mat-label>
+				<mat-select [(ngModel)]="filterLevel" (ngModelChange)="onLevelChange()">
+					<mat-option value="all">All Levels</mat-option>
+					<mat-option value="info">Info</mat-option>
+					<mat-option value="warning">Warning</mat-option>
+					<mat-option value="error">Error</mat-option>
+				</mat-select>
+			</mat-form-field>
+
+			<div class="spacer"></div>
+			<button mat-raised-button (click)="loadActivities();" color="primary">
+				<mat-icon>refresh</mat-icon>
+				Refresh
+			</button>
+		</div>
+	</mat-card>
+
+	<!-- Activities Table -->
+	<mat-card class="table-card">
+		<div class="table-header">
+			<h3>System Activity Logs</h3>
+			<span class="total-count">Total: {{ totalActivities }}</span>
+		</div>
+
+		<table mat-table [dataSource]="filteredActivities()">
+			<!-- Timestamp Column -->
+			<ng-container matColumnDef="timestamp">
+				<th mat-header-cell *matHeaderCellDef>Timestamp</th>
+				<td mat-cell *matCellDef="let row">
+					<span class="timestamp">
+						{{ (row.timestamp | date: 'medium') || '-' }}
+					</span>
+				</td>
+			</ng-container>
+
+			<!-- User ID Column -->
+			<ng-container matColumnDef="userId">
+				<th mat-header-cell *matHeaderCellDef>User ID</th>
+				<td mat-cell *matCellDef="let row">
+					<span class="user-id">{{ row.user_id }}</span>
+				</td>
+			</ng-container>
+
+			<!-- Action Column -->
+			<ng-container matColumnDef="action">
+				<th mat-header-cell *matHeaderCellDef>Action</th>
+				<td mat-cell *matCellDef="let row">
+					<span class="action-badge" [class]="'action-' + row.action">
+						<mat-icon>{{ getActionIcon(row.action) }}</mat-icon>
+						{{ row.action | uppercase }}
+					</span>
+				</td>
+			</ng-container>
+
+			<!-- Entity Type Column -->
+			<ng-container matColumnDef="entityType">
+				<th mat-header-cell *matHeaderCellDef>Entity Type</th>
+				<td mat-cell *matCellDef="let row">
+					<span class="entity-type">
+						<mat-icon>{{ getEntityIcon(row.entity_type) }}</mat-icon>
+						{{ row.entity_type }}
+					</span>
+				</td>
+			</ng-container>
+
+			<!-- Description Column -->
+			<ng-container matColumnDef="description">
+				<th mat-header-cell *matHeaderCellDef>Description</th>
+				<td mat-cell *matCellDef="let row">
+					<span [matTooltip]="row.description" [matTooltipPosition]="'above'">
+						{{ getTruncatedDescription(row.description) }}
+					</span>
+				</td>
+			</ng-container>
+
+			<!-- IP Address Column -->
+			<ng-container matColumnDef="ipAddress">
+				<th mat-header-cell *matHeaderCellDef>IP Address</th>
+				<td mat-cell *matCellDef="let row">
+					{{ row.ip_address || '-' }}
+				</td>
+			</ng-container>
+
+			<tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+			<tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+		</table>
+
+		<!-- Paginator -->
+		<mat-paginator
+			[pageSizeOptions]="[10, 20, 50, 100]"
+			[pageSize]="pageSize"
+			[length]="totalActivities"
+			(page)="onPageChange($event)"
+		></mat-paginator>
+	</mat-card>
+</section>

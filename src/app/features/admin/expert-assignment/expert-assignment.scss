@@ -1,0 +1,111 @@
+.expert-assignment {
+	padding: 20px;
+
+	.section-title {
+		font-size: 24px;
+		font-weight: 500;
+		margin-bottom: 24px;
+		color: #333;
+	}
+
+	.filters-card {
+		padding: 20px;
+		margin-bottom: 20px;
+		background: #f9f9f9;
+
+		.filter-row {
+			display: flex;
+			gap: 16px;
+
+			mat-form-field {
+				min-width: 200px;
+			}
+		}
+	}
+
+	.table-card {
+		padding: 0;
+		overflow: auto;
+
+		.table-header {
+			padding: 16px;
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+			border-bottom: 1px solid #eee;
+
+			h3 {
+				margin: 0;
+				font-size: 16px;
+				font-weight: 600;
+			}
+
+			.total-count {
+				color: #666;
+				font-size: 14px;
+			}
+		}
+
+		table {
+			width: 100%;
+
+			th {
+				background-color: #f0f0f0;
+				font-weight: 600;
+				padding: 16px;
+				text-align: left;
+				border-bottom: 2px solid #ddd;
+			}
+
+			td {
+				padding: 12px 16px;
+				border-bottom: 1px solid #eee;
+			}
+
+			tr:hover {
+				background-color: #fafafa;
+			}
+
+			.truncate-text {
+				display: block;
+				max-width: 200px;
+				overflow: hidden;
+				text-overflow: ellipsis;
+				white-space: nowrap;
+			}
+
+			.status-badge {
+				display: inline-block;
+				padding: 4px 12px;
+				border-radius: 20px;
+				font-size: 12px;
+				font-weight: 600;
+
+				&.status-pending {
+					background-color: #fff3cd;
+					color: #856404;
+				}
+
+				&.status-assigned {
+					background-color: #d1ecf1;
+					color: #0c5460;
+				}
+
+				&.status-completed {
+					background-color: #d4edda;
+					color: #155724;
+				}
+			}
+
+			.actions-cell {
+				display: flex;
+				gap: 8px;
+			}
+		}
+
+		::ng-deep .mat-mdc-paginator {
+			background-color: #f9f9f9;
+			border-top: 1px solid #eee;
+		}
+	}
+}

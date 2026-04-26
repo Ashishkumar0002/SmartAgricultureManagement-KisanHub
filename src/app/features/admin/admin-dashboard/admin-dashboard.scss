@@ -1,0 +1,539 @@
+// Modern SaaS-Style Admin Dashboard
+// Inspired by clean agriculture landing page design
+
+// Color Variables
+$primary-green: #22c55e;
+$secondary-green: #16a34a;
+$accent-orange: #f97316;
+$light-gray: #f9fafb;
+$medium-gray: #6b7280;
+$dark-gray: #111827;
+$border-color: #e5e7eb;
+
+// Mixins
+@mixin card-shadow {
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  transition: box-shadow 0.3s ease;
+}
+
+@mixin hover-shadow {
+  &:hover {
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  }
+}
+
+@mixin rounded-xl {
+  border-radius: 0.75rem;
+}
+
+@mixin rounded-2xl {
+  border-radius: 1rem;
+}
+
+@mixin rounded-full {
+  border-radius: 9999px;
+}
+
+// Hero Section
+.hero-section {
+  background: linear-gradient(135deg, #f0fdf4 0%, #fed7aa 100%);
+  padding: 3rem 1.5rem;
+
+  .hero-container {
+    max-width: 80rem;
+    margin: 0 auto;
+  }
+
+  .hero-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2rem;
+    align-items: center;
+
+    @media (min-width: 1024px) {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  .hero-content {
+    .hero-title {
+      font-size: 2.25rem;
+      font-weight: 700;
+      color: $dark-gray;
+      margin-bottom: 1rem;
+
+      @media (min-width: 1024px) {
+        font-size: 3rem;
+      }
+    }
+
+    .hero-subtitle {
+      font-size: 1.25rem;
+      color: $medium-gray;
+      margin-bottom: 2rem;
+    }
+
+    .hero-button {
+      padding: 0.75rem 2rem;
+      @include rounded-xl;
+      @include card-shadow;
+      @include hover-shadow;
+      font-weight: 600;
+    }
+  }
+
+  .hero-image {
+    display: flex;
+    justify-content: center;
+
+    @media (min-width: 1024px) {
+      justify-content: flex-end;
+    }
+
+    .agriculture-icon {
+      width: 20rem;
+      height: 20rem;
+      background: linear-gradient(135deg, #dcfce7 0%, #fed7aa 100%);
+      @include rounded-2xl;
+      @include card-shadow;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      .icon-large {
+        font-size: 8rem;
+        color: white;
+      }
+    }
+  }
+}
+
+// KPI Cards Section
+.kpi-section {
+  padding: 3rem 1.5rem;
+  background: white;
+
+  .kpi-container {
+    max-width: 80rem;
+    margin: 0 auto;
+  }
+
+  .kpi-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+
+    @media (min-width: 768px) {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    @media (min-width: 1024px) {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
+
+  .kpi-card {
+    @include rounded-2xl;
+    @include card-shadow;
+    @include hover-shadow;
+    border-left: 4px solid $primary-green;
+    overflow: hidden;
+
+    .kpi-content {
+      padding: 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      .kpi-text {
+        .kpi-label {
+          font-size: 0.875rem;
+          font-weight: 500;
+          color: $medium-gray;
+          margin-bottom: 0.25rem;
+        }
+
+        .kpi-value {
+          font-size: 1.875rem;
+          font-weight: 700;
+          color: $dark-gray;
+        }
+      }
+
+      .kpi-icon {
+        width: 3rem;
+        height: 3rem;
+        background: #dcfce7;
+        @include rounded-xl;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        mat-icon {
+          color: $primary-green;
+        }
+      }
+    }
+  }
+}
+
+// Analytics Section
+.analytics-section {
+  padding: 3rem 1.5rem;
+  background: $light-gray;
+
+  .analytics-container {
+    max-width: 80rem;
+    margin: 0 auto;
+
+    .section-title {
+      font-size: 1.875rem;
+      font-weight: 700;
+      color: $dark-gray;
+      margin-bottom: 2rem;
+    }
+  }
+
+  .analytics-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2rem;
+    margin-bottom: 2rem;
+
+    @media (min-width: 1024px) {
+      grid-template-columns: 2fr 1fr;
+    }
+  }
+
+  .chart-card {
+    @include rounded-2xl;
+    @include card-shadow;
+    @include hover-shadow;
+
+    &.large {
+      @media (min-width: 1024px) {
+        grid-column: span 2;
+      }
+    }
+
+    &.full {
+      margin-top: 2rem;
+    }
+
+    .chart-header {
+      padding: 1.5rem;
+
+      .chart-title {
+        font-size: 1.25rem;
+        font-weight: 600;
+        color: $dark-gray;
+        margin: 0;
+      }
+    }
+
+    .chart-content {
+      padding: 0 1.5rem 1.5rem;
+      height: 16rem;
+
+      canvas {
+        width: 100% !important;
+        height: 100% !important;
+      }
+    }
+  }
+}
+
+// Content Sections
+.content-section {
+  padding: 3rem 1.5rem;
+  background: white;
+
+  .content-container {
+    max-width: 80rem;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 3rem;
+  }
+
+  .content-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2rem;
+    align-items: center;
+
+    &.reverse {
+      @media (min-width: 1024px) {
+        .content-image {
+          order: 1;
+        }
+
+        .content-text {
+          order: 2;
+        }
+      }
+    }
+
+    @media (min-width: 1024px) {
+      grid-template-columns: 1fr 1fr;
+    }
+
+    .content-text {
+      .content-title {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: $dark-gray;
+        margin-bottom: 1rem;
+      }
+
+      .content-description {
+        color: $medium-gray;
+        margin-bottom: 1.5rem;
+      }
+
+      .crop-list, .activity-list {
+        display: flex;
+        flex-direction: column;
+        gap: 0.75rem;
+      }
+
+      .crop-item, .activity-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0.75rem;
+        @include rounded-xl;
+
+        &.crop-item {
+          background: #f0fdf4;
+        }
+
+        &.activity-item {
+          background: #fef3c7;
+          border-left: 4px solid $accent-orange;
+        }
+
+        .crop-name, .activity-title {
+          font-weight: 500;
+          color: $dark-gray;
+        }
+
+        .crop-count {
+          color: $primary-green;
+          font-weight: 600;
+        }
+
+        .activity-desc {
+          font-size: 0.875rem;
+          color: $medium-gray;
+        }
+      }
+    }
+
+    .content-image {
+      display: flex;
+      justify-content: center;
+
+      .image-placeholder {
+        width: 20rem;
+        height: 20rem;
+        @include rounded-2xl;
+        @include card-shadow;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: linear-gradient(135deg, #dcfce7 0%, #bbf7d0 100%);
+
+        &.orange {
+          background: linear-gradient(135deg, #fed7aa 0%, #fdba74 100%);
+        }
+
+        .image-icon {
+          font-size: 4rem;
+          color: $primary-green;
+
+          .orange & {
+            color: $accent-orange;
+          }
+        }
+      }
+    }
+  }
+}
+
+// Timeline Section
+.timeline-section {
+  padding: 3rem 1.5rem;
+  background: $light-gray;
+
+  .timeline-container {
+    max-width: 56rem;
+    margin: 0 auto;
+
+    .section-title.center {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+  }
+
+  .timeline {
+    position: relative;
+
+    &::before {
+      content: '';
+      position: absolute;
+      left: 1.5rem;
+      top: 0;
+      bottom: 0;
+      width: 2px;
+      background: #d1d5db;
+    }
+
+    .timeline-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+
+      &:last-child {
+        margin-bottom: 0;
+      }
+
+      .timeline-icon {
+        width: 3rem;
+        height: 3rem;
+        @include rounded-full;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        @include card-shadow;
+        z-index: 1;
+
+        &.create {
+          background: #dcfce7;
+          color: $primary-green;
+        }
+
+        &.update {
+          background: #dbeafe;
+          color: #2563eb;
+        }
+
+        &.alert {
+          background: #fef3c7;
+          color: $accent-orange;
+        }
+      }
+
+      .timeline-content {
+        flex: 1;
+        background: white;
+        @include rounded-xl;
+        padding: 1rem;
+        @include card-shadow;
+
+        .timeline-header {
+          display: flex;
+          align-items: center;
+          gap: 0.5rem;
+          margin-bottom: 0.5rem;
+
+          .activity-type {
+            padding: 0.25rem 0.75rem;
+            @include rounded-full;
+            font-size: 0.75rem;
+            font-weight: 500;
+
+            &.create {
+              background: #dcfce7;
+              color: #166534;
+            }
+
+            &.update {
+              background: #dbeafe;
+              color: #1e40af;
+            }
+
+            &.alert {
+              background: #fef3c7;
+              color: #92400e;
+            }
+          }
+
+          .timeline-time {
+            font-size: 0.875rem;
+            color: $medium-gray;
+          }
+        }
+
+        .timeline-title {
+          font-size: 1.125rem;
+          font-weight: 600;
+          color: $dark-gray;
+          margin: 0.25rem 0;
+        }
+
+        .timeline-description {
+          color: $medium-gray;
+          margin: 0.25rem 0;
+        }
+
+        .timeline-user {
+          font-size: 0.875rem;
+          color: $medium-gray;
+          margin: 0.25rem 0 0;
+        }
+      }
+    }
+  }
+}
+
+// Management Section
+.management-section {
+  padding: 3rem 1.5rem;
+  background: white;
+
+  .management-container {
+    max-width: 80rem;
+    margin: 0 auto;
+
+    .section-title {
+      font-size: 1.875rem;
+      font-weight: 700;
+      color: $dark-gray;
+      margin-bottom: 2rem;
+    }
+  }
+
+  .management-card {
+    @include rounded-2xl;
+    @include card-shadow;
+
+    .tab-icon {
+      margin-right: 0.5rem;
+    }
+  }
+}
+
+// Responsive Design
+@media (max-width: 768px) {
+  .hero-section, .kpi-section, .analytics-section, .content-section, .timeline-section, .management-section {
+    padding: 2rem 1rem;
+  }
+
+  .hero-title {
+    font-size: 1.875rem !important;
+  }
+
+  .kpi-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  .analytics-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  .content-grid {
+    grid-template-columns: 1fr !important;
+  }
+}

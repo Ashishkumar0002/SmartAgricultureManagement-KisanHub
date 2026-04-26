@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" role="img" aria-label="KisanHub logo">
+  <defs>
+    <linearGradient id="khSky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#f4b54a"/>
+      <stop offset="100%" stop-color="#e08d1f"/>
+    </linearGradient>
+    <linearGradient id="khField" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#66bb6a"/>
+      <stop offset="100%" stop-color="#2e7d32"/>
+    </linearGradient>
+  </defs>
+
+  <circle cx="60" cy="60" r="58" fill="#fff"/>
+  <circle cx="60" cy="60" r="53" fill="url(#khSky)"/>
+  <circle cx="60" cy="54" r="15" fill="#fff7e6" opacity="0.9"/>
+  <path d="M8 74c15-10 35-12 52-7 17-5 37-3 52 7v26H8z" fill="url(#khField)"/>
+  <path d="M20 102c16-10 35-12 52-7 17-5 32-3 48 7" stroke="#3b2613" stroke-width="5" fill="none" stroke-linecap="round"/>
+  <path d="M14 107c16-10 35-12 52-7 17-5 32-3 48 7" stroke="#4b2c12" stroke-width="3" fill="none" stroke-linecap="round"/>
+  <path d="M28 70h14l8 10h-14z" fill="#2f2416"/>
+  <circle cx="36" cy="78" r="4" fill="#21160d"/>
+  <circle cx="52" cy="78" r="4" fill="#21160d"/>
+  <path d="M44 70h15v6H44z" fill="#8d5e34"/>
+  <path d="M61 74l8-7 7 3-9 8z" fill="#c9894c"/>
+  <path d="M69 67l4-8" stroke="#7b4a2a" stroke-width="2" stroke-linecap="round"/>
+  <path d="M70 58c6-5 12-5 16 0-5 1-9 5-16 0z" fill="#2e7d32"/>
+  <path d="M57 61c4-6 8-8 12-6-3 4-5 9-12 6z" fill="#2e7d32"/>
+  <circle cx="60" cy="60" r="58" fill="none" stroke="#ffffff" stroke-width="4"/>
+</svg>

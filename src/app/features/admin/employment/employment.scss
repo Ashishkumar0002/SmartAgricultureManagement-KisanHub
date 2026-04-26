@@ -1,0 +1,148 @@
+.employment-panel {
+  padding: 24px;
+  border: 1px solid #d8e6d8;
+  border-radius: 16px;
+  background: linear-gradient(180deg, #f8fcf8 0%, #f1f7f1 100%);
+  box-shadow: 0 8px 24px rgba(25, 65, 35, 0.08);
+}
+
+.employment-header {
+  margin-bottom: 20px;
+
+  .section-title {
+    margin: 0;
+    color: #163c20;
+    font-size: 1.35rem;
+    font-weight: 700;
+    letter-spacing: 0.01em;
+  }
+
+  p {
+    margin: 8px 0 0;
+    color: #4b6250;
+    font-size: 0.95rem;
+  }
+}
+
+.tab-section {
+  padding: 14px 0 8px;
+}
+
+.filter-field {
+  width: min(460px, 100%);
+  margin-bottom: 14px;
+}
+
+.table-wrapper {
+  overflow-x: auto;
+  border: 1px solid #d4e2d4;
+  border-radius: 14px;
+  background: #ffffff;
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.8);
+}
+
+table {
+  width: 100%;
+  min-width: 760px;
+}
+
+th.mat-mdc-header-cell {
+  font-weight: 700;
+  color: #173d21;
+  background: #f3f8f3;
+  border-bottom: 1px solid #dbe7db;
+}
+
+td.mat-mdc-cell {
+  color: #2c4032;
+  border-bottom: 1px solid #edf2ed;
+}
+
+tr.mat-mdc-row:hover td.mat-mdc-cell {
+  background: #f8fbf8;
+}
+
+.action-cell {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.status-chip {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 88px;
+  padding: 5px 12px;
+  border-radius: 999px;
+  text-transform: capitalize;
+  font-weight: 700;
+  font-size: 12px;
+  letter-spacing: 0.02em;
+  border: 1px solid transparent;
+}
+
+.status-pending {
+  background: #fff6de;
+  color: #7c5b00;
+  border-color: #f0db9a;
+}
+
+.status-approved {
+  background: #e5f6ea;
+  color: #1f6b2c;
+  border-color: #b8e2c3;
+}
+
+.status-rejected {
+  background: #fde8ea;
+  color: #8d1c2a;
+  border-color: #f0bcc2;
+}
+
+.job-detail {
+  margin-top: 16px;
+  border: 1px solid #d6e5d6;
+  border-radius: 12px;
+  padding: 14px;
+  background: #ffffff;
+  box-shadow: 0 4px 14px rgba(28, 68, 37, 0.06);
+
+  h3 {
+    margin: 0 0 10px;
+    color: #184325;
+    font-size: 1.05rem;
+    font-weight: 700;
+  }
+
+  p {
+    margin: 5px 0;
+    color: #314837;
+    line-height: 1.45;
+  }
+}
+
+mat-paginator {
+  margin-top: 10px;
+  border: 1px solid #dbe7db;
+  border-radius: 10px;
+  background: #ffffff;
+}
+
+@media (max-width: 768px) {
+  .employment-panel {
+    padding: 14px;
+    border-radius: 12px;
+  }
+
+  .employment-header {
+    .section-title {
+      font-size: 1.2rem;
+    }
+  }
+
+  table {
+    min-width: 680px;
+  }
+}

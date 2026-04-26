@@ -1,0 +1,84 @@
+.panel {
+	padding: 20px;
+}
+
+
+.tab-panel {
+	padding-top: 16px;
+}
+
+.filters-row {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+	gap: 12px;
+	align-items: end;
+	margin-bottom: 12px;
+}
+
+.table-wrap {
+	overflow-x: auto;
+	border: 1px solid var(--sams-border, #dfe7e2);
+	border-radius: 10px;
+}
+
+.jobs-table {
+	width: 100%;
+}
+
+.status-message {
+	margin: 0;
+	color: var(--sams-muted);
+	padding: 12px 0;
+}
+
+.status-chip {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	min-width: 88px;
+	padding: 4px 12px;
+	border-radius: 999px;
+	font-size: 12px;
+	font-weight: 700;
+	text-transform: capitalize;
+}
+
+.status-applied {
+	background: #fff3cd;
+	color: #8a6d00;
+}
+
+.status-accepted {
+	background: #d9f3df;
+	color: #1f6b2c;
+}
+
+.status-rejected {
+	background: #f9d6d8;
+	color: #8f1f2b;
+}
+
+.status-working {
+	background: #d7ecff;
+	color: #0b4f90;
+}
+
+.profile-form {
+	padding-top: 8px;
+}
+
+.grid {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+	gap: 12px;
+}
+
+.full-width {
+	width: 100%;
+}
+
+.actions-row {
+	display: flex;
+	justify-content: flex-end;
+	padding-top: 8px;
+}

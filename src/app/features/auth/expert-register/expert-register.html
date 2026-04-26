@@ -1,0 +1,92 @@
+<mat-card class="register-card page-card glass-card">
+  <h2>Expert Registration</h2>
+
+  <mat-stepper [linear]="true">
+    <mat-step [stepControl]="personalForm" label="Personal Details">
+      <form [formGroup]="personalForm" class="step-form">
+        <mat-form-field appearance="outline"><mat-label>Full Name</mat-label><input matInput formControlName="full_name" /></mat-form-field>
+        <mat-form-field appearance="outline"><mat-label>Email</mat-label><input matInput type="email" formControlName="email" /></mat-form-field>
+        <mat-form-field appearance="outline"><mat-label>Phone Number</mat-label><input matInput formControlName="phone" /></mat-form-field>
+        <mat-form-field appearance="outline"><mat-label>Password</mat-label><input matInput type="password" formControlName="password" /></mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Confirm Password</mat-label>
+          <input matInput type="password" formControlName="confirm_password" />
+          @if (personalForm.hasError('passwordMismatch') && personalForm.touched) {
+            <mat-error>Passwords do not match</mat-error>
+          }
+        </mat-form-field>
+
+        <div class="file-input">
+          <label>Profile Photo</label>
+          <input type="file" accept="image/*" (change)="onProfilePhotoSelected($event)" />
+        </div>
+
+        <div class="step-actions">
+          <button mat-flat-button color="primary" matStepperNext>Next</button>
+        </div>
+      </form>
+    </mat-step>
+
+    <mat-step [stepControl]="professionalForm" label="Professional Details">
+      <form [formGroup]="professionalForm" class="step-form">
+        <mat-form-field appearance="outline">
+          <mat-label>Qualification</mat-label>
+          <mat-select formControlName="qualification">
+            @for (q of qualifications; track q) {
+              <mat-option [value]="q">{{ q }}</mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Specialization</mat-label>
+          <mat-select formControlName="specialization">
+            @for (s of specializations; track s) {
+              <mat-option [value]="s">{{ s }}</mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline"><mat-label>Years of Experience</mat-label><input matInput type="number" formControlName="years_of_experience" /></mat-form-field>
+        <mat-form-field appearance="outline" class="full-row"><mat-label>Short Bio</mat-label><textarea matInput rows="3" formControlName="bio"></textarea></mat-form-field>
+
+        <div class="file-input full-row">
+          <label>Certifications (Optional)</label>
+          <input type="file" (change)="onCertificationsSelected($event)" />
+        </div>
+
+        <div class="step-actions">
+          <button mat-stroked-button matStepperPrevious>Back</button>
+          <button mat-flat-button color="primary" matStepperNext>Next</button>
+        </div>
+      </form>
+    </mat-step>
+
+    <mat-step [stepControl]="workForm" label="Work & Verification">
+      <form [formGroup]="workForm" class="step-form">
+        <mat-form-field appearance="outline"><mat-label>Working Organization (Optional)</mat-label><input matInput formControlName="working_organization" /></mat-form-field>
+        <mat-form-field appearance="outline"><mat-label>Service Areas</mat-label><input matInput formControlName="service_areas" placeholder="State/District list" /></mat-form-field>
+        <mat-form-field appearance="outline"><mat-label>Languages Known</mat-label><input matInput formControlName="languages_known" placeholder="English, Hindi, Punjabi" /></mat-form-field>
+
+        <div class="file-input full-row">
+          <label>ID Proof Upload (Required)</label>
+          <input type="file" (change)="onIdProofSelected($event)" />
+        </div>
+
+        <div class="step-actions">
+          <button mat-stroked-button matStepperPrevious>Back</button>
+          <button mat-flat-button color="primary" type="button" (click)="submit()" [disabled]="isSubmitting">
+            @if (isSubmitting) {
+              <mat-spinner diameter="20"></mat-spinner>
+            } @else {
+              <mat-icon>verified</mat-icon>
+            }
+            Complete Registration
+          </button>
+        </div>
+      </form>
+    </mat-step>
+  </mat-stepper>
+
+  <p class="switch">Already have an account? <a routerLink="/auth/login">Login</a></p>
+</mat-card>

@@ -1,0 +1,212 @@
+<div class="farmer-dashboard bg-dashboard">
+  <mat-sidenav-container class="sidenav-container">
+    <!-- Sidebar -->
+    <mat-sidenav
+      #sidenav
+      class="sidebar"
+      [opened]="isMenuOpen()"
+      mode="side"
+      [fixedInViewport]="false"
+    >
+      <div class="sidebar-brand">
+        <span class="brand-name">KisanHub</span>
+      </div>
+      <mat-nav-list class="menu-list">
+        @for (item of menuItems; track item.id) {
+          <mat-list-item
+            class="menu-item"
+            [class.active]="selectedMenuItem() === item.id"
+            (click)="selectMenuItem(item.id)"
+          >
+            <mat-icon matListItemIcon [matBadge]="item.badge > 0 ? item.badge : null" 
+                     [matBadgeColor]="'primary'">
+              {{ item.icon }}
+            </mat-icon>
+            <span matListItemTitle>{{ item.label }}</span>
+          </mat-list-item>
+        }
+      </mat-nav-list>
+    </mat-sidenav>
+
+    <!-- Main Content -->
+    <mat-sidenav-content class="main-content">
+      <!-- Overview Statistics -->
+      @if (selectedMenuItem() === 'overview' && !isLoadingStats()) {
+        <section class="news-hero" aria-label="Market news hero">
+          <div class="news-hero-media" aria-hidden="true">
+            @if (isLoadingNews()) {
+              <div class="news-loading">Loading market news...</div>
+            } @else if (marketNews().length > 0) {
+              @for (article of marketNews(); track article.url + $index; let i = $index) {
+                <img
+                  class="news-slide"
+                  [class.active]="i === activeNewsIndex()"
+                  [src]="article.image_url || 'https://images.unsplash.com/photo-1464226184884-fa280b87c399?auto=format&fit=crop&w=1600&q=80'"
+                  [alt]="article.title"
+                  loading="lazy"
+                />
+              }
+            } @else {
+              <img
+                class="news-slide active"
+                src="https://images.unsplash.com/photo-1464226184884-fa280b87c399?auto=format&fit=crop&w=1600&q=80"
+                alt="Agriculture market"
+                loading="lazy"
+              />
+            }
+          </div>
+
+          <div class="news-hero-overlay">
+            <div class="hero-topbar">
+              <h2>Market News Hero</h2>
+              <span class="counter">{{ activeNewsCounter() }}</span>
+            </div>
+
+            <div class="filter-tags">
+              @for (filter of newsFilters; track filter) {
+                <span class="tag">{{ filter }}</span>
+              }
+            </div>
+
+            @if (activeNews()) {
+              <h3>{{ activeNews()!.title }}</h3>
+              <p>{{ activeNews()!.description || 'Latest agriculture and mandi market developments from trusted sources.' }}</p>
+              <div class="meta-row">
+                <span>{{ activeNews()!.source_name || 'Market Desk' }}</span>
+                <a [href]="activeNews()!.url" target="_blank" rel="noopener noreferrer">Read Full News</a>
+              </div>
+            } @else if (isLoadingNews()) {
+              <h3>Preparing latest market updates...</h3>
+              <p>Fetching agriculture, farming, mandi, irrigation and fertilizer headlines.</p>
+            } @else {
+              <h3>Market updates are temporarily unavailable</h3>
+              <p>News feed will appear here automatically when headlines are available.</p>
+            }
+          </div>
+        </section>
+
+        <section class="schemes-section" aria-label="Government schemes">
+          <div class="schemes-header">
+            <div>
+              <h2>New Government Schemes</h2>
+              <p>Important schemes include PM-KISAN, Pradhan Mantri Fasal Bima Yojana, Kisan Credit Card, and Soil Health Card Scheme.</p>
+            </div>
+            <div class="schemes-filters">
+              <mat-form-field appearance="outline" class="filter-field">
+                <mat-label>Show Schemes</mat-label>
+                <mat-select [value]="selectedSchemeScope()" (selectionChange)="selectedSchemeScope.set($event.value)">
+                  <mat-option value="ministry">Ministry Schemes</mat-option>
+                  <mat-option value="state">State Schemes</mat-option>
+                  <mat-option value="both">Both Ministries and States Schemes</mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+          </div>
+
+          @if (isLoadingSchemes()) {
+            <p class="schemes-loading">Loading schemes...</p>
+          } @else if (filteredSchemes().length > 0) {
+            <div class="schemes-grid">
+              @for (scheme of filteredSchemes(); track scheme.scheme_name + ($index + '-' + (scheme.ministry || ''))) {
+                <article class="scheme-card">
+                  <h3>{{ scheme.scheme_name }}</h3>
+                  <p class="scheme-description">{{ scheme.description || 'Scheme details will help farmers plan support and benefits.' }}</p>
+                  <div class="scheme-meta">
+                    <span><strong>Ministry:</strong> {{ scheme.ministry || 'N/A' }}</span>
+                    <span><strong>State:</strong> {{ scheme.state || 'All India' }}</span>
+                  </div>
+                  @if (scheme.source_url) {
+                    <a [href]="scheme.source_url" target="_blank" rel="noopener noreferrer">View Scheme</a>
+                  }
+                </article>
+              }
+            </div>
+          } @else {
+            <p class="schemes-empty">No schemes found for selected filters.</p>
+          }
+        </section>
+
+        <div class="stats-grid">
+          <mat-card class="stat-card">
+            <mat-icon class="stat-icon land-icon">landscape</mat-icon>
+            <h3>Total Land</h3>
+            <p class="stat-value">{{ stats()?.total_land || 0 }} hectares</p>
+          </mat-card>
+          <mat-card class="stat-card">
+            <mat-icon class="stat-icon crops-icon">grass</mat-icon>
+            <h3>Active Crops</h3>
+            <p class="stat-value">{{ stats()?.active_crops || 0 }}</p>
+          </mat-card>
+          <mat-card class="stat-card">
+            <mat-icon class="stat-icon weather-icon">wb_sunny</mat-icon>
+            <h3>Current Weather</h3>
+            <p class="stat-value small-value">{{ weatherLabel() }}</p>
+          </mat-card>
+          <mat-card class="stat-card">
+            <mat-icon class="stat-icon market-icon">storefront</mat-icon>
+            <h3>Market Highlight</h3>
+            <p class="stat-value small-value">{{ marketLabel() }}</p>
+          </mat-card>
+          <mat-card class="stat-card">
+            <mat-icon class="stat-icon requests-icon">message</mat-icon>
+            <h3>Pending Requests</h3>
+            <p class="stat-value">{{ stats()?.pending_requests || 0 }}</p>
+          </mat-card>
+        </div>
+
+        <div class="quick-actions">
+          <h2>Quick Actions</h2>
+          <div class="action-buttons">
+            <button mat-raised-button color="primary" (click)="selectMenuItem('expert')">
+              <mat-icon>support_agent</mat-icon>
+              Ask an Expert
+            </button>
+            <button mat-raised-button color="accent" (click)="selectMenuItem('equipment')">
+              <mat-icon>construction</mat-icon>
+              Rent Equipment
+            </button>
+            <button mat-raised-button (click)="selectMenuItem('farm')">
+              <mat-icon>agriculture</mat-icon>
+              Manage Farm
+            </button>
+            <button mat-raised-button (click)="selectMenuItem('insights')">
+              <mat-icon>insights</mat-icon>
+              View Insights
+            </button>
+          </div>
+        </div>
+      }
+
+      <!-- Module Content -->
+      @switch(selectedMenuItem()) {
+        @case('farm') {
+          <app-farm-profile></app-farm-profile>
+        }
+        @case('insights') {
+          <app-insights></app-insights>
+        }
+        @case('alerts') {
+          <app-farmer-alerts></app-farmer-alerts>
+        }
+        @case('expert') {
+          <app-ask-expert></app-ask-expert>
+        }
+        @case('crops') {
+          <app-crop-info></app-crop-info>
+        }
+        @case('employment') {
+          <app-farmer-employment></app-farmer-employment>
+        }
+        @case('workers') {
+          <app-workers></app-workers>
+        }
+        @case('equipment') {
+          <app-equipment-rental></app-equipment-rental>
+        }
+        @case('techniques') {
+          <app-farming-techniques></app-farming-techniques>
+        }
+      }
+    </mat-sidenav-content>
+  </mat-sidenav-container>
+</div>
